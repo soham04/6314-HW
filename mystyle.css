@@ -46,3 +46,24 @@ body {
   footer {
     margin-top: 20px;
   }
+
+  .assignment-info {
+    position: fixed;
+    top: 10px;
+    right: 10px;
+    width: auto;
+    max-width: 200px;
+    font-size: 14px;
+    background-color: rgba(240, 240, 240, 0.9); /* Slightly transparent gray background */
+    padding: 10px;
+    border-radius: 8px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    color: #333;
+    font-weight: bold;
+    z-index: 1000; /* Ensures it stays above other content */
+  }
+  
+  .assignment-info p {
+    margin: 0;
+    line-height: 1.5;
+  }
