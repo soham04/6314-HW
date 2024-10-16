@@ -107,16 +107,19 @@ function validateFlightForm() {
   // Validate origin and destination (case-insensitive)
   if (!validCities.includes(origin) || !validCities.includes(destination)) {
     displayError("Origin and destination must be a city in Texas or California.", "flightError");
+    document.getElementById("flightSummary").style.display = "none";
     return false;
   }
 
   // Validate departure date
   if (!departureDateInput) {
     displayError("Please select a departure date.", "flightError");
+    document.getElementById("flightSummary").style.display = "none";
     return false;
   }
   if (departureDate < startDate || departureDate > endDate) {
     displayError("Departure date must be between September 1, 2024 and December 1, 2024.", "flightError");
+    document.getElementById("flightSummary").style.display = "none";
     return false;
   }
 
@@ -124,10 +127,12 @@ function validateFlightForm() {
   if (tripType === "roundtrip") {
     if (!returnDateInput) {
       displayError("Please select a return date for a round trip.", "flightError");
+      document.getElementById("flightSummary").style.display = "none";
       return false;
     }
     if (returnDate <= departureDate) {
       displayError("Return date must be after the departure date.", "flightError");
+      document.getElementById("flightSummary").style.display = "none";
       return false;
     }
   }
@@ -135,15 +140,41 @@ function validateFlightForm() {
   // Validate passenger count
   if (adults > 4 || children > 4 || infants > 4) {
     displayError("Number of passengers for each category (adults, children, infants) cannot exceed 4.", "flightError");
+    document.getElementById("flightSummary").style.display = "none";
     return false;
   }
   if (adults + children + infants === 0) {
     displayError("Please select at least one passenger.", "flightError");
+    document.getElementById("flightSummary").style.display = "none";
     return false;
   }
 
-  displayError("Flight form submitted successfully!", "flightError");
+  // If all validations pass, display the summary
+  const summary = `
+    <h3>Flight Summary</h3>
+    <p><strong>Trip Type:</strong> ${tripType === "oneway" ? "One Way" : "Round Trip"}</p>
+    <p><strong>Origin:</strong> ${capitalize(origin)}</p>
+    <p><strong>Destination:</strong> ${capitalize(destination)}</p>
+    <p><strong>Departure Date:</strong> ${departureDateInput}</p>
+    ${tripType === "roundtrip" ? `<p><strong>Return Date:</strong> ${returnDateInput}</p>` : ""}
+    <p><strong>Passengers:</strong></p>
+    <ul>
+      <li>Adults: ${adults}</li>
+      <li>Children: ${children}</li>
+      <li>Infants: ${infants}</li>
+    </ul>
+  `;
+  document.getElementById("flightSummary").innerHTML = summary;
+  document.getElementById("flightSummary").style.display = "block";
   return true;
+}
+
+// Helper function to capitalize the first letter of each word
+function capitalize(str) {
+  return str
+    .split(" ")
+    .map(word => word.charAt(0).toUpperCase() + word.slice(1))
+    .join(" ");
 }
 
 // Stays Form Validation
