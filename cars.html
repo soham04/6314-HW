@@ -27,9 +27,12 @@
     </aside>
     <main>
       <h2>Rent a Car</h2>
+      <!-- Error Message Display -->
+      <div id="carError" class="error"></div>
+
       <form id="carForm">
         <label for="carCity">City:</label>
-        <input type="text" id="carCity" name="carCity" required>
+        <input type="text" id="carCity" name="carCity" placeholder="Houston" required>
 
         <label for="carType">Car Type:</label>
         <select id="carType" name="carType">
@@ -38,6 +41,12 @@
           <option value="compact">Compact</option>
           <option value="midsize">Midsize</option>
         </select>
+
+        <label for="checkInDate">Check-In Date:</label>
+        <input type="date" id="checkInDate" name="checkInDate" required>
+
+        <label for="checkOutDate">Check-Out Date:</label>
+        <input type="date" id="checkOutDate" name="checkOutDate" required>
 
         <button type="button" onclick="validateCarForm()">Submit</button>
       </form>

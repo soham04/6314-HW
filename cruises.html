@@ -27,6 +27,9 @@
     </aside>
     <main>
       <h2>Book a Cruise</h2>
+      <!-- Error Message Display -->
+      <div id="cruiseError" class="error"></div>
+
       <form id="cruiseForm">
         <label for="destination">Destination:</label>
         <select id="destination" name="destination">
@@ -35,6 +38,15 @@
           <option value="Europe">Europe</option>
           <option value="Mexico">Mexico</option>
         </select>
+
+        <label for="departureDate">Departure Date:</label>
+        <input type="date" id="departureDate" name="departureDate" required>
+
+        <label for="durationMin">Minimum Duration (days):</label>
+        <input type="number" id="durationMin" name="durationMin" placeholder="3" min="3" max="10" required>
+
+        <label for="durationMax">Maximum Duration (days):</label>
+        <input type="number" id="durationMax" name="durationMax" placeholder="10" min="3" max="10" required>
 
         <button type="button" onclick="validateCruiseForm()">Submit</button>
       </form>

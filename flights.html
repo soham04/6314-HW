@@ -27,6 +27,9 @@
     </aside>
     <main>
       <h2>Book Your Flight</h2>
+      <!-- Error Message Display -->
+      <div id="flightError" class="error"></div>
+
       <form id="flightForm">
         <label for="tripType">Trip Type:</label>
         <select id="tripType" name="tripType" onchange="toggleReturnDate()">
@@ -35,10 +38,10 @@
         </select>
 
         <label for="origin">Origin:</label>
-        <input type="text" id="origin" name="origin" required>
+        <input type="text" id="origin" name="origin" placeholder="Dallas" required>
 
         <label for="destination">Destination:</label>
-        <input type="text" id="destination" name="destination" required>
+        <input type="text" id="destination" name="destination" placeholder="San Francisco" required>
 
         <label for="departureDate">Departure Date:</label>
         <input type="date" id="departureDate" name="departureDate" required>
