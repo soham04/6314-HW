@@ -262,40 +262,74 @@ function validateStayForm() {
   return true;
 }
 
-// Cars Form Validation
+// Car Form Validation
 function validateCarForm() {
-  const city = document.getElementById("carCity").value;
+  const city = document.getElementById("carCity").value.trim().toLowerCase();
   const carType = document.getElementById("carType").value;
-  const checkInDate = new Date(document.getElementById("checkInDate").value);
-  const checkOutDate = new Date(document.getElementById("checkOutDate").value);
+  const checkInDateInput = document.getElementById("checkInDate").value;
+  const checkOutDateInput = document.getElementById("checkOutDate").value;
+  const checkInDate = checkInDateInput ? new Date(checkInDateInput) : null;
+  const checkOutDate = checkOutDateInput ? new Date(checkOutDateInput) : null;
 
-  const validCities = ["Dallas", "Houston", "Austin", "San Antonio", "Los Angeles", "San Francisco", "San Diego"];
-  const carTypes = ["economy", "SUV", "compact", "midsize"];
+  const validCities = [
+    "abilene", "amarillo", "austin", "brownsville", "college station", "corpus christi", "dallas", "el paso", 
+    "fort worth", "galveston", "harlingen", "houston", "killeen", "laredo", "longview", "lubbock", "mcallen", 
+    "midland", "san antonio", "texarkana", "tyler", "victoria", "waco", "bakersfield", "burbank", "fresno", 
+    "los angeles", "long beach", "modesto", "ontario", "palm springs", "riverside", "sacramento", "san diego", 
+    "san francisco", "san jose", "santa ana", "santa barbara", "santa rosa", "simi valley", "stockton", 
+    "torrance", "visalia"
+  ];
+  
+  const validCarTypes = ["economy", "suv", "compact", "midsize"];
   const startDate = new Date("2024-09-01");
   const endDate = new Date("2024-12-01");
 
   clearError("carError");
 
+  // Validate city
   if (!validCities.includes(city)) {
     displayError("City must be a city in Texas or California.", "carError");
+    document.getElementById("carSummary").style.display = "none";
     return false;
   }
-  if (!carTypes.includes(carType)) {
+
+  // Validate car type
+  if (!validCarTypes.includes(carType)) {
     displayError("Car type must be Economy, SUV, Compact, or Midsize.", "carError");
+    document.getElementById("carSummary").style.display = "none";
+    return false;
+  }
+
+  // Validate check-in and check-out dates
+  if (!checkInDateInput || !checkOutDateInput) {
+    displayError("Please select both check-in and check-out dates.", "carError");
+    document.getElementById("carSummary").style.display = "none";
     return false;
   }
   if (checkInDate < startDate || checkInDate > endDate || checkOutDate < startDate || checkOutDate > endDate) {
     displayError("Check-in and check-out dates must be between September 1, 2024 and December 1, 2024.", "carError");
+    document.getElementById("carSummary").style.display = "none";
     return false;
   }
   if (checkInDate >= checkOutDate) {
     displayError("Check-out date must be after check-in date.", "carError");
+    document.getElementById("carSummary").style.display = "none";
     return false;
   }
 
-  displayError("Car form submitted successfully!", "carError");
+  // If all validations pass, display the summary
+  const summary = `
+    <h3>Car Rental Summary</h3>
+    <p><strong>City:</strong> ${capitalize(city)}</p>
+    <p><strong>Car Type:</strong> ${capitalize(carType)}</p>
+    <p><strong>Check-In Date:</strong> ${checkInDateInput}</p>
+    <p><strong>Check-Out Date:</strong> ${checkOutDateInput}</p>
+  `;
+  document.getElementById("carSummary").innerHTML = summary;
+  document.getElementById("carSummary").style.display = "block";
   return true;
 }
+
 
 // Cruises Form Validation
 function validateCruiseForm() {
