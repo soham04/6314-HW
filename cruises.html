@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Travel Deals - Cruises</title>
+  <link rel="stylesheet" href="mystyle.css">
+  <script src="script.js" defer></script>
+</head>
+<body>
+  <header>
+    <h1>Travel Deals</h1>
+  </header>
+  
+  <nav>
+    <a href="index.html">Home</a>
+    <a href="flights.html">Flights</a>
+    <a href="stays.html">Stays</a>
+    <a href="cars.html">Cars</a>
+    <a href="cruises.html">Cruises</a>
+    <a href="contact.html">Contact Us</a>
+  </nav>
+  
+  <div class="container">
+    <aside>
+      <h2>Cruises</h2>
+      <p>Book cruises to wonderful destinations!</p>
+    </aside>
+    <main>
+      <h2>Book a Cruise</h2>
+      <form id="cruiseForm">
+        <label for="destination">Destination:</label>
+        <select id="destination" name="destination">
+          <option value="Alaska">Alaska</option>
+          <option value="Bahamas">Bahamas</option>
+          <option value="Europe">Europe</option>
+          <option value="Mexico">Mexico</option>
+        </select>
+
+        <button type="button" onclick="validateCruiseForm()">Submit</button>
+      </form>
+    </main>
+  </div>
+  
+  <footer>
+    <p>&copy; 2024 Travel Deals. All rights reserved.</p>
+  </footer>
+</body>
+</html>

@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Travel Deals - Stays</title>
+  <link rel="stylesheet" href="mystyle.css">
+  <script src="script.js" defer></script>
+</head>
+<body>
+  <header>
+    <h1>Travel Deals</h1>
+  </header>
+  
+  <nav>
+    <a href="index.html">Home</a>
+    <a href="flights.html">Flights</a>
+    <a href="stays.html">Stays</a>
+    <a href="cars.html">Cars</a>
+    <a href="cruises.html">Cruises</a>
+    <a href="contact.html">Contact Us</a>
+  </nav>
+  
+  <div class="container">
+    <aside>
+      <h2>Stays</h2>
+      <p>Find comfortable stays for your journey!</p>
+    </aside>
+    <main>
+      <h2>Book Your Stay</h2>
+      <form id="stayForm">
+        <label for="city">City:</label>
+        <input type="text" id="city" name="city" required>
+
+        <label for="checkInDate">Check-In Date:</label>
+        <input type="date" id="checkInDate" name="checkInDate" required>
+
+        <label for="checkOutDate">Check-Out Date:</label>
+        <input type="date" id="checkOutDate" name="checkOutDate" required>
+
+        <button type="button" onclick="validateStayForm()">Search</button>
+      </form>
+    </main>
+  </div>
+  
+  <footer>
+    <p>&copy; 2024 Travel Deals. All rights reserved.</p>
+  </footer>
+</body>
+</html>

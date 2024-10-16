@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Travel Deals - Flights</title>
+  <link rel="stylesheet" href="mystyle.css">
+  <script src="script.js" defer></script>
+</head>
+<body>
+  <header>
+    <h1>Travel Deals</h1>
+  </header>
+  
+  <nav>
+    <a href="index.html">Home</a>
+    <a href="flights.html">Flights</a>
+    <a href="stays.html">Stays</a>
+    <a href="cars.html">Cars</a>
+    <a href="cruises.html">Cruises</a>
+    <a href="contact.html">Contact Us</a>
+  </nav>
+  
+  <div class="container">
+    <aside>
+      <h2>Flights</h2>
+      <p>Book your flights at great prices!</p>
+    </aside>
+    <main>
+      <h2>Book Your Flight</h2>
+      <form id="flightForm">
+        <label for="tripType">Trip Type:</label>
+        <select id="tripType" name="tripType" onchange="toggleReturnDate()">
+          <option value="oneway">One Way</option>
+          <option value="roundtrip">Round Trip</option>
+        </select>
+
+        <label for="origin">Origin:</label>
+        <input type="text" id="origin" name="origin" required>
+
+        <label for="destination">Destination:</label>
+        <input type="text" id="destination" name="destination" required>
+
+        <label for="departureDate">Departure Date:</label>
+        <input type="date" id="departureDate" name="departureDate" required>
+
+        <div id="returnDateContainer" style="display:none;">
+          <label for="returnDate">Return Date:</label>
+          <input type="date" id="returnDate" name="returnDate">
+        </div>
+
+        <button type="button" onclick="validateFlightForm()">Search</button>
+      </form>
+    </main>
+  </div>
+  
+  <footer>
+    <p>&copy; 2024 Travel Deals. All rights reserved.</p>
+  </footer>
+</body>
+</html>
