@@ -55,7 +55,7 @@ nav a:hover {
   border-radius: 5px;
 }
 
-/* Container Styling to make main content area grow */
+/* Container Styling */
 .container {
   
   display: grid;
@@ -64,7 +64,7 @@ nav a:hover {
   max-width: 1200px;
   margin: 2rem auto;
   padding: 0 1.5rem;
-  flex-grow: 1; /* Allows container to take up remaining space */
+  flex-grow: 1;
 }
 
 /* Sidebar Styling */

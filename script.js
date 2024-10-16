@@ -89,7 +89,7 @@ function validateFlightForm() {
   const children = parseInt(document.getElementById("children").value) || 0;
   const infants = parseInt(document.getElementById("infants").value) || 0;
 
-  // Updated valid cities list (case-insensitive)
+  // Valid cities list in Texas and Calfornia (case-insensitive)
   const validCities = [
     "abilene", "amarillo", "austin", "brownsville", "college station", "corpus christi", "dallas", "el paso", 
     "fort worth", "galveston", "harlingen", "houston", "killeen", "laredo", "longview", "lubbock", "mcallen", 
@@ -188,7 +188,6 @@ function validateStayForm() {
   const children = parseInt(document.getElementById("children").value) || 0;
   const infants = parseInt(document.getElementById("infants").value) || 0;
 
-  // Updated valid cities list (case-insensitive)
   const validCities = [
     "abilene", "amarillo", "austin", "brownsville", "college station", "corpus christi", "dallas", "el paso", 
     "fort worth", "galveston", "harlingen", "houston", "killeen", "laredo", "longview", "lubbock", "mcallen", 
@@ -386,7 +385,7 @@ function validateCruiseForm() {
     return false;
   }
 
-  // Calculate required rooms based on adults and children (infants do not count toward room limit)
+  // Calculate required rooms based on adults and children
   const totalGuests = adults + children;
   let roomsNeeded = Math.ceil(totalGuests / 2);
 
