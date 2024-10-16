@@ -24,22 +24,22 @@
   <div class="container">
     <aside>
       <h2>Contact Us</h2>
-      <p>Get in touch with us for inquiries.</p>
+      <p>Get in touch with us for inquiries, feedback, or assistance.</p>
     </aside>
     <main>
       <h2>Contact Form</h2>
-      <form id="contactForm" onsubmit="return validateContactForm();">
+      <form id="contactForm">
         <label for="firstName">First Name:</label>
-        <input type="text" id="firstName" name="firstName" required>
+        <input type="text" id="firstName" name="firstName" required placeholder="John">
 
         <label for="lastName">Last Name:</label>
-        <input type="text" id="lastName" name="lastName" required>
+        <input type="text" id="lastName" name="lastName" required placeholder="Doe">
 
         <label for="phone">Phone Number:</label>
-        <input type="text" id="phone" name="phone" placeholder="(123) 456-7890" required>
+        <input type="text" id="phone" name="phone" required placeholder="(123) 456-7890">
 
         <label for="email">Email:</label>
-        <input type="email" id="email" name="email" required>
+        <input type="email" id="email" name="email" required placeholder="john.doe@example.com">
 
         <label>Gender:</label>
         <input type="radio" id="genderMale" name="gender" value="Male">
@@ -48,7 +48,7 @@
         <label for="genderFemale">Female</label>
 
         <label for="comment">Comment:</label>
-        <textarea id="comment" name="comment" required></textarea>
+        <textarea id="comment" name="comment" required placeholder="Your comments here..." minlength="10"></textarea>
 
         <button type="submit">Submit</button>
       </form>

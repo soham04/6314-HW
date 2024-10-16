@@ -1,73 +1,84 @@
 // Display Date-Time
 document.addEventListener("DOMContentLoaded", () => {
-    const dateTimeElement = document.getElementById("date-time");
-    if (dateTimeElement) {
-      setInterval(() => {
-        const now = new Date();
-        dateTimeElement.textContent = now.toLocaleString();
-      }, 1000);
-    }
-  });
-  
-  // Contact Form Validation
-  function validateContactForm() {
-    const firstName = document.getElementById("firstName").value.trim();
-    const lastName = document.getElementById("lastName").value.trim();
-    const phone = document.getElementById("phone").value.trim();
-    const email = document.getElementById("email").value.trim();
-    const comment = document.getElementById("comment").value.trim();
-    const gender = document.querySelector('input[name="gender"]:checked');
-  
-    const nameRegex = /^[A-Z][a-zA-Z]*$/;  // First letter must be uppercase, followed by alphabetic characters only
-    const phoneRegex = /^\(\d{3}\) \d{3}-\d{4}$/;  // Format: (123) 456-7890
-    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;  // Must contain '@' and '.'
-  
-    // Validate First Name
-    if (!nameRegex.test(firstName)) {
-      alert("First name must start with a capital letter and contain only alphabetic characters.");
-      return false;
-    }
-  
-    // Validate Last Name
-    if (!nameRegex.test(lastName)) {
-      alert("Last name must start with a capital letter and contain only alphabetic characters.");
-      return false;
-    }
-  
-    // Ensure First Name and Last Name are not the same
-    if (firstName === lastName) {
-      alert("First name and last name cannot be the same.");
-      return false;
-    }
-  
-    // Validate Phone Number
-    if (!phoneRegex.test(phone)) {
-      alert("Phone number must be in the format (123) 456-7890.");
-      return false;
-    }
-  
-    // Validate Email
-    if (!emailRegex.test(email)) {
-      alert("Please enter a valid email address.");
-      return false;
-    }
-  
-    // Validate Gender Selection
-    if (!gender) {
-      alert("Please select a gender.");
-      return false;
-    }
-  
-    // Validate Comment Length
-    if (comment.length < 10) {
-      alert("Comment must be at least 10 characters.");
-      return false;
-    }
-  
-    // If all validations pass
-    alert("Contact form submitted successfully!");
-    return true;  // Allow form submission
+  const dateTimeElement = document.getElementById("date-time");
+  if (dateTimeElement) {
+    setInterval(() => {
+      const now = new Date();
+      dateTimeElement.textContent = now.toLocaleString();
+    }, 1000);
   }
+});
+
+// Contact Form Validation
+function validateContactForm() {
+  const firstName = document.getElementById("firstName").value.trim();
+  const lastName = document.getElementById("lastName").value.trim();
+  const phone = document.getElementById("phone").value.trim();
+  const email = document.getElementById("email").value.trim();
+  const comment = document.getElementById("comment").value.trim();
+  const gender = document.querySelector('input[name="gender"]:checked');
+
+  const nameRegex = /^[A-Z][a-zA-Z]*$/; // First letter uppercase, alphabetic only
+  const phoneRegex = /^\(\d{3}\) \d{3}-\d{4}$/; // Format: (123) 456-7890
+  const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/; // Basic email validation
+
+  // Validate First and Last Name
+  if (!nameRegex.test(firstName)) {
+    alert("First name must start with a capital letter and contain only alphabetic characters.");
+    return false;
+  }
+  if (!nameRegex.test(lastName)) {
+    alert("Last name must start with a capital letter and contain only alphabetic characters.");
+    return false;
+  }
+  if (firstName.toLowerCase() === lastName.toLowerCase()) {
+    alert("First name and last name cannot be the same.");
+    return false;
+  }
+
+  // Validate Phone Number
+  if (!phoneRegex.test(phone)) {
+    alert("Phone number must be in the format (123) 456-7890 and contain exactly 10 digits.");
+    return false;
+  }
+
+  // Validate Email
+  if (!emailRegex.test(email)) {
+    alert("Please enter a valid email address.");
+    return false;
+  }
+
+  // Validate Gender
+  if (!gender) {
+    alert("Please select a gender.");
+    return false;
+  }
+
+  // Validate Comment Length
+  if (comment.length < 10) {
+    alert("Comment must be at least 10 characters.");
+    return false;
+  }
+
+  // Success message if all validations pass
+  alert("Contact info submitted successfully. Someone will reach out to you shortly.");
+  return true;
+}
+
+// Event Listener for Submit Button on Contact Form
+document.addEventListener("DOMContentLoaded", () => {
+  const contactForm = document.getElementById("contactForm");
+  if (contactForm) {
+    contactForm.addEventListener("submit", (event) => {
+      event.preventDefault(); // Prevent the form from submitting by default
+      if (validateContactForm()) {
+        // Clear form after successful submission
+        contactForm.reset();
+      }
+    });
+  }
+});
+  
   
   // Flights Form Validation
   function toggleReturnDate() {
