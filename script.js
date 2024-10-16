@@ -179,30 +179,86 @@ function capitalize(str) {
 
 // Stays Form Validation
 function validateStayForm() {
-  const city = document.getElementById("city").value;
-  const checkInDate = new Date(document.getElementById("checkInDate").value);
-  const checkOutDate = new Date(document.getElementById("checkOutDate").value);
+  const city = document.getElementById("city").value.trim().toLowerCase();
+  const checkInDateInput = document.getElementById("checkInDate").value;
+  const checkOutDateInput = document.getElementById("checkOutDate").value;
+  const checkInDate = checkInDateInput ? new Date(checkInDateInput) : null;
+  const checkOutDate = checkOutDateInput ? new Date(checkOutDateInput) : null;
+  const adults = parseInt(document.getElementById("adults").value) || 0;
+  const children = parseInt(document.getElementById("children").value) || 0;
+  const infants = parseInt(document.getElementById("infants").value) || 0;
 
-  const validCities = ["Dallas", "Houston", "Austin", "San Antonio", "Los Angeles", "San Francisco", "San Diego"];
+  // Updated valid cities list (case-insensitive)
+  const validCities = [
+    "abilene", "amarillo", "austin", "brownsville", "college station", "corpus christi", "dallas", "el paso", 
+    "fort worth", "galveston", "harlingen", "houston", "killeen", "laredo", "longview", "lubbock", "mcallen", 
+    "midland", "san antonio", "texarkana", "tyler", "victoria", "waco", "bakersfield", "burbank", "fresno", 
+    "los angeles", "long beach", "modesto", "ontario", "palm springs", "riverside", "sacramento", "san diego", 
+    "san francisco", "san jose", "santa ana", "santa barbara", "santa rosa", "simi valley", "stockton", 
+    "torrance", "visalia"
+  ];
+  
   const startDate = new Date("2024-09-01");
   const endDate = new Date("2024-12-01");
 
   clearError("stayError");
 
+  // Validate city (case-insensitive)
   if (!validCities.includes(city)) {
     displayError("City must be a city in Texas or California.", "stayError");
+    document.getElementById("staySummary").style.display = "none";
+    return false;
+  }
+
+  // Validate check-in and check-out dates
+  if (!checkInDateInput || !checkOutDateInput) {
+    displayError("Please select both check-in and check-out dates.", "stayError");
+    document.getElementById("staySummary").style.display = "none";
     return false;
   }
   if (checkInDate < startDate || checkInDate > endDate || checkOutDate < startDate || checkOutDate > endDate) {
     displayError("Check-in and check-out dates must be between September 1, 2024 and December 1, 2024.", "stayError");
+    document.getElementById("staySummary").style.display = "none";
     return false;
   }
   if (checkInDate >= checkOutDate) {
     displayError("Check-out date must be after check-in date.", "stayError");
+    document.getElementById("staySummary").style.display = "none";
     return false;
   }
 
-  displayError("Stay form submitted successfully!", "stayError");
+  // Validate guest count
+  if (adults === 0 && (children > 0 || infants > 0)) {
+    displayError("At least one adult is required if there are children or infants.", "stayError");
+    document.getElementById("staySummary").style.display = "none";
+    return false;
+  }
+  if (adults + children + infants === 0) {
+    displayError("Number of guests cannot be 0. Please select at least one guest.", "stayError");
+    document.getElementById("staySummary").style.display = "none";
+    return false;
+  }
+
+  // Calculate required rooms
+  const totalGuests = adults + children;
+  let roomsNeeded = Math.ceil(totalGuests / 2);
+
+  // Display summary
+  const summary = `
+    <h3>Stay Summary</h3>
+    <p><strong>City:</strong> ${capitalize(city)}</p>
+    <p><strong>Check-In Date:</strong> ${checkInDateInput}</p>
+    <p><strong>Check-Out Date:</strong> ${checkOutDateInput}</p>
+    <p><strong>Guests:</strong></p>
+    <ul>
+      <li>Adults: ${adults}</li>
+      <li>Children: ${children}</li>
+      <li>Infants: ${infants}</li>
+    </ul>
+    <p><strong>Number of Rooms Needed:</strong> ${roomsNeeded}</p>
+  `;
+  document.getElementById("staySummary").innerHTML = summary;
+  document.getElementById("staySummary").style.display = "block";
   return true;
 }
 

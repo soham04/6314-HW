@@ -40,8 +40,20 @@
         <label for="checkOutDate">Check-Out Date:</label>
         <input type="date" id="checkOutDate" name="checkOutDate" required>
 
+        <label for="adults">Adults:</label>
+        <input type="number" id="adults" name="adults" placeholder="0" min="0" required>
+
+        <label for="children">Children:</label>
+        <input type="number" id="children" name="children" placeholder="0" min="0" required>
+
+        <label for="infants">Infants:</label>
+        <input type="number" id="infants" name="infants" placeholder="0" min="0" required>
+
         <button type="button" onclick="validateStayForm()">Search</button>
       </form>
+
+      <!-- Summary Display -->
+      <div id="staySummary" class="summary" style="display:none;"></div>
     </main>
   </div>
   
