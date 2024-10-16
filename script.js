@@ -407,3 +407,46 @@ function validateCruiseForm() {
   $("#cruiseSummary").html(summary).show();
   return true;
 }
+
+// Apply settings from localStorage on page load
+document.addEventListener("DOMContentLoaded", function() {
+  applySavedSettings();
+});
+
+function applySettings() {
+  const fontSize = document.getElementById("fontSize").value;
+  const bgColor = document.getElementById("bgColor").value;
+
+  // Save settings to localStorage
+  localStorage.setItem("fontSize", fontSize);
+  localStorage.setItem("bgColor", bgColor);
+
+  // Apply settings immediately
+  applySavedSettings();
+}
+
+function applySavedSettings() {
+  // Get settings from localStorage
+  const fontSize = localStorage.getItem("fontSize") || "medium";
+  const bgColor = localStorage.getItem("bgColor") || "#ffffff";
+
+  // Apply font size to main content
+  document.querySelectorAll("main").forEach(mainContent => {
+    switch (fontSize) {
+      case "small":
+        mainContent.style.fontSize = "14px";
+        break;
+      case "medium":
+        mainContent.style.fontSize = "16px";
+        break;
+      case "large":
+        mainContent.style.fontSize = "18px";
+        break;
+      default:
+        mainContent.style.fontSize = "16px";
+    }
+  });
+
+  // Apply background color to the entire page
+  document.body.style.backgroundColor = bgColor;
+}

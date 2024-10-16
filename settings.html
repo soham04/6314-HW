@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Settings</title>
+  <link rel="stylesheet" href="mystyle.css">
+  <script src="script.js" defer></script>
+</head>
+<body>
+  <header>
+    <h1>Travel Deals</h1>
+  </header>
+  
+  <nav>
+    <a href="index.html">Home</a>
+    <a href="flights.html">Flights</a>
+    <a href="stays.html">Stays</a>
+    <a href="cars.html">Cars</a>
+    <a href="cruises.html">Cruises</a>
+    <a href="contact.html">Contact Us</a>
+    <a href="settings.html">Settings</a>
+  </nav>
+  
+  <div class="container">
+    <aside>
+      <h2>Settings</h2>
+      <p>Customize your experience on the Travel Deals website.</p>
+    </aside>
+    <main>
+      <h2>Customize Appearance</h2>
+
+      <form id="settingsForm">
+        <label for="fontSize">Font Size of Main Content:</label>
+        <select id="fontSize" name="fontSize">
+          <option value="small">Small</option>
+          <option value="medium" selected>Medium</option>
+          <option value="large">Large</option>
+        </select>
+
+        <label for="bgColor">Background Color:</label>
+        <input type="color" id="bgColor" name="bgColor" value="#ffffff">
+
+        <button type="button" onclick="applySettings()">Apply Settings</button>
+      </form>
+    </main>
+  </div>
+  
+  <footer>
+    <p>&copy; 2024 Travel Deals. All rights reserved.</p>
+  </footer>
+</body>
+</html>
