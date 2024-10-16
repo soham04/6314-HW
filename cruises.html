@@ -4,6 +4,7 @@
   <meta charset="UTF-8">
   <title>Travel Deals - Cruises</title>
   <link rel="stylesheet" href="mystyle.css">
+  <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
   <script src="script.js" defer></script>
 </head>
 <body>
@@ -27,8 +28,8 @@
     </aside>
     <main>
       <h2>Book a Cruise</h2>
-      <!-- Error Message Display -->
-      <div id="cruiseError" class="error"></div>
+      <!-- Error Message Display with red color -->
+      <div id="cruiseError" class="error" style="color: red;"></div>
 
       <form id="cruiseForm">
         <label for="destination">Destination:</label>
@@ -39,8 +40,8 @@
           <option value="Mexico">Mexico</option>
         </select>
 
-        <label for="departureDate">Departure Date:</label>
-        <input type="date" id="departureDate" name="departureDate" required>
+        <label for="departingDate">Departing Date:</label>
+        <input type="date" id="departingDate" name="departingDate" required>
 
         <label for="durationMin">Minimum Duration (days):</label>
         <input type="number" id="durationMin" name="durationMin" placeholder="3" min="3" max="10" required>
@@ -48,8 +49,20 @@
         <label for="durationMax">Maximum Duration (days):</label>
         <input type="number" id="durationMax" name="durationMax" placeholder="10" min="3" max="10" required>
 
+        <label for="adults">Adults:</label>
+        <input type="number" id="adults" name="adults" placeholder="0" min="0" required>
+
+        <label for="children">Children:</label>
+        <input type="number" id="children" name="children" placeholder="0" min="0" required>
+
+        <label for="infants">Infants:</label>
+        <input type="number" id="infants" name="infants" placeholder="0" min="0" required>
+
         <button type="button" onclick="validateCruiseForm()">Submit</button>
       </form>
+
+      <!-- Summary Display -->
+      <div id="cruiseSummary" class="summary" style="display:none;"></div>
     </main>
   </div>
   

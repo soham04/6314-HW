@@ -331,32 +331,79 @@ function validateCarForm() {
 }
 
 
-// Cruises Form Validation
+// Cruise Form Validation using jQuery
 function validateCruiseForm() {
-  const destination = document.getElementById("destination").value;
-  const durationMin = parseInt(document.getElementById("durationMin").value);
-  const durationMax = parseInt(document.getElementById("durationMax").value);
-  const departureDate = new Date(document.getElementById("departureDate").value);
+  const city = $("#destination").val();
+  const departingDateInput = $("#departingDate").val();
+  const departingDate = departingDateInput ? new Date(departingDateInput) : null;
+  const durationMin = parseInt($("#durationMin").val()) || 0;
+  const durationMax = parseInt($("#durationMax").val()) || 0;
+  const adults = parseInt($("#adults").val()) || 0;
+  const children = parseInt($("#children").val()) || 0;
+  const infants = parseInt($("#infants").val()) || 0;
 
   const validDestinations = ["Alaska", "Bahamas", "Europe", "Mexico"];
   const startDate = new Date("2024-09-01");
   const endDate = new Date("2024-12-01");
 
-  clearError("cruiseError");
+  $("#cruiseError").text(""); // Clear previous error message
 
-  if (!validDestinations.includes(destination)) {
-    displayError("Destination must be Alaska, Bahamas, Europe, or Mexico.", "cruiseError");
+  // Validate destination
+  if (!validDestinations.includes(city)) {
+    $("#cruiseError").text("Destination must be Alaska, Bahamas, Europe, or Mexico.").css("color", "red");
+    $("#cruiseSummary").hide();
     return false;
   }
+
+  // Validate departing date
+  if (!departingDateInput) {
+    $("#cruiseError").text("Please select a departing date.").css("color", "red");
+    $("#cruiseSummary").hide();
+    return false;
+  }
+  if (departingDate < startDate || departingDate > endDate) {
+    $("#cruiseError").text("Departing date must be between September 1, 2024, and December 1, 2024.").css("color", "red");
+    $("#cruiseSummary").hide();
+    return false;
+  }
+
+  // Validate duration
   if (durationMin < 3 || durationMax > 10 || durationMin > durationMax) {
-    displayError("Cruise duration must be between 3 and 10 days.", "cruiseError");
-    return false;
-  }
-  if (departureDate < startDate || departureDate > endDate) {
-    displayError("Departure date must be between September 1, 2024 and December 1, 2024.", "cruiseError");
+    $("#cruiseError").text("Duration must be between 3 and 10 days, and minimum should not exceed maximum.").css("color", "red");
+    $("#cruiseSummary").hide();
     return false;
   }
 
-  displayError("Cruise form submitted successfully!", "cruiseError");
+  // Validate guest count
+  if (adults === 0 && (children > 0 || infants > 0)) {
+    $("#cruiseError").text("At least one adult is required if there are children or infants.").css("color", "red");
+    $("#cruiseSummary").hide();
+    return false;
+  }
+  if (adults + children + infants === 0) {
+    $("#cruiseError").text("Number of guests cannot be 0. Please select at least one guest.").css("color", "red");
+    $("#cruiseSummary").hide();
+    return false;
+  }
+
+  // Calculate required rooms based on adults and children (infants do not count toward room limit)
+  const totalGuests = adults + children;
+  let roomsNeeded = Math.ceil(totalGuests / 2);
+
+  // If all validations pass, display the summary
+  const summary = `
+    <h3>Cruise Booking Summary</h3>
+    <p><strong>Destination:</strong> ${city}</p>
+    <p><strong>Departing Date:</strong> ${departingDateInput}</p>
+    <p><strong>Duration:</strong> ${durationMin} - ${durationMax} days</p>
+    <p><strong>Guests:</strong></p>
+    <ul>
+      <li>Adults: ${adults}</li>
+      <li>Children: ${children}</li>
+      <li>Infants: ${infants}</li>
+    </ul>
+    <p><strong>Number of Rooms Needed:</strong> ${roomsNeeded}</p>
+  `;
+  $("#cruiseSummary").html(summary).show();
   return true;
 }
