@@ -64,35 +64,81 @@ function validateContactForm() {
   return true;
 }
 
-// Toggle Return Date for Flights
+// Toggle Return Date based on Trip Type Selection
 function toggleReturnDate() {
   const tripType = document.getElementById("tripType").value;
   document.getElementById("returnDateContainer").style.display = tripType === "roundtrip" ? "block" : "none";
 }
 
+// Toggle Passenger Form
+function togglePassengerForm() {
+  const passengerForm = document.getElementById("passengerForm");
+  passengerForm.style.display = passengerForm.style.display === "none" ? "block" : "none";
+}
+
 // Flights Form Validation
 function validateFlightForm() {
-  const origin = document.getElementById("origin").value;
-  const destination = document.getElementById("destination").value;
-  const departureDate = new Date(document.getElementById("departureDate").value);
-  const returnDate = document.getElementById("returnDate").value ? new Date(document.getElementById("returnDate").value) : null;
+  const origin = document.getElementById("origin").value.trim().toLowerCase();
+  const destination = document.getElementById("destination").value.trim().toLowerCase();
+  const tripType = document.getElementById("tripType").value;
+  const departureDateInput = document.getElementById("departureDate").value;
+  const returnDateInput = document.getElementById("returnDate").value;
+  const departureDate = departureDateInput ? new Date(departureDateInput) : null;
+  const returnDate = returnDateInput ? new Date(returnDateInput) : null;
+  const adults = parseInt(document.getElementById("adults").value) || 0;
+  const children = parseInt(document.getElementById("children").value) || 0;
+  const infants = parseInt(document.getElementById("infants").value) || 0;
 
-  const validCities = ["Dallas", "Houston", "Austin", "San Antonio", "Los Angeles", "San Francisco", "San Diego"];
+  // Updated valid cities list (case-insensitive)
+  const validCities = [
+    "abilene", "amarillo", "austin", "brownsville", "college station", "corpus christi", "dallas", "el paso", 
+    "fort worth", "galveston", "harlingen", "houston", "killeen", "laredo", "longview", "lubbock", "mcallen", 
+    "midland", "san antonio", "texarkana", "tyler", "victoria", "waco", "bakersfield", "burbank", "fresno", 
+    "los angeles", "long beach", "modesto", "ontario", "palm springs", "riverside", "sacramento", "san diego", 
+    "san francisco", "san jose", "santa ana", "santa barbara", "santa rosa", "simi valley", "stockton", 
+    "torrance", "visalia"
+  ];
+  
   const startDate = new Date("2024-09-01");
   const endDate = new Date("2024-12-01");
 
   clearError("flightError");
 
+  // Validate origin and destination (case-insensitive)
   if (!validCities.includes(origin) || !validCities.includes(destination)) {
     displayError("Origin and destination must be a city in Texas or California.", "flightError");
+    return false;
+  }
+
+  // Validate departure date
+  if (!departureDateInput) {
+    displayError("Please select a departure date.", "flightError");
     return false;
   }
   if (departureDate < startDate || departureDate > endDate) {
     displayError("Departure date must be between September 1, 2024 and December 1, 2024.", "flightError");
     return false;
   }
-  if (returnDate && (returnDate < departureDate || returnDate > endDate)) {
-    displayError("Return date must be after departure date and before December 1, 2024.", "flightError");
+
+  // Validate return date for round trip
+  if (tripType === "roundtrip") {
+    if (!returnDateInput) {
+      displayError("Please select a return date for a round trip.", "flightError");
+      return false;
+    }
+    if (returnDate <= departureDate) {
+      displayError("Return date must be after the departure date.", "flightError");
+      return false;
+    }
+  }
+
+  // Validate passenger count
+  if (adults > 4 || children > 4 || infants > 4) {
+    displayError("Number of passengers for each category (adults, children, infants) cannot exceed 4.", "flightError");
+    return false;
+  }
+  if (adults + children + infants === 0) {
+    displayError("Please select at least one passenger.", "flightError");
     return false;
   }
 
