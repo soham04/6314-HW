@@ -22,11 +22,11 @@ function clearError(elementId) {
 
 // Contact Form Validation
 function validateContactForm() {
-  const firstName = document.getElementById("firstName").value;
-  const lastName = document.getElementById("lastName").value;
-  const phone = document.getElementById("phone").value;
-  const email = document.getElementById("email").value;
-  const comment = document.getElementById("comment").value;
+  const firstName = document.getElementById("firstName").value.trim();
+  const lastName = document.getElementById("lastName").value.trim();
+  const phone = document.getElementById("phone").value.trim();
+  const email = document.getElementById("email").value.trim();
+  const comment = document.getElementById("comment").value.trim();
   const gender = document.querySelector('input[name="gender"]:checked');
 
   const nameRegex = /^[A-Z][a-zA-Z]*$/;
@@ -75,7 +75,6 @@ function togglePassengerForm() {
   const passengerForm = document.getElementById("passengerForm");
   passengerForm.style.display = passengerForm.style.display === "none" ? "block" : "none";
 }
-
 // Flights Form Validation
 function validateFlightForm() {
   const origin = document.getElementById("origin").value.trim().toLowerCase();
@@ -89,23 +88,23 @@ function validateFlightForm() {
   const children = parseInt(document.getElementById("children").value) || 0;
   const infants = parseInt(document.getElementById("infants").value) || 0;
 
-  // Valid cities list in Texas and Calfornia (case-insensitive)
+  // Valid cities list in Texas and California (case-insensitive)
   const validCities = [
-    "abilene", "amarillo", "austin", "brownsville", "college station", "corpus christi", "dallas", "el paso", 
-    "fort worth", "galveston", "harlingen", "houston", "killeen", "laredo", "longview", "lubbock", "mcallen", 
-    "midland", "san antonio", "texarkana", "tyler", "victoria", "waco", "bakersfield", "burbank", "fresno", 
-    "los angeles", "long beach", "modesto", "ontario", "palm springs", "riverside", "sacramento", "san diego", 
-    "san francisco", "san jose", "santa ana", "santa barbara", "santa rosa", "simi valley", "stockton", 
+    "abilene", "amarillo", "austin", "brownsville", "college station", "corpus christi", "dallas", "el paso",
+    "fort worth", "galveston", "harlingen", "houston", "killeen", "laredo", "longview", "lubbock", "mcallen",
+    "midland", "san antonio", "texarkana", "tyler", "victoria", "waco", "bakersfield", "burbank", "fresno",
+    "los angeles", "long beach", "modesto", "ontario", "palm springs", "riverside", "sacramento", "san diego",
+    "san francisco", "san jose", "santa ana", "santa barbara", "santa rosa", "simi valley", "stockton",
     "torrance", "visalia"
   ];
-  
+
   const startDate = new Date("2024-09-01");
   const endDate = new Date("2024-12-01");
 
   clearError("flightError");
 
   // Validate origin and destination (case-insensitive)
-  if (!validCities.includes(origin) || !validCities.includes(destination)) {
+  if (!origin || !destination || !validCities.includes(origin) || !validCities.includes(destination)) {
     displayError("Origin and destination must be a city in Texas or California.", "flightError");
     document.getElementById("flightSummary").style.display = "none";
     return false;
@@ -189,14 +188,14 @@ function validateStayForm() {
   const infants = parseInt(document.getElementById("infants").value) || 0;
 
   const validCities = [
-    "abilene", "amarillo", "austin", "brownsville", "college station", "corpus christi", "dallas", "el paso", 
-    "fort worth", "galveston", "harlingen", "houston", "killeen", "laredo", "longview", "lubbock", "mcallen", 
-    "midland", "san antonio", "texarkana", "tyler", "victoria", "waco", "bakersfield", "burbank", "fresno", 
-    "los angeles", "long beach", "modesto", "ontario", "palm springs", "riverside", "sacramento", "san diego", 
-    "san francisco", "san jose", "santa ana", "santa barbara", "santa rosa", "simi valley", "stockton", 
+    "abilene", "amarillo", "austin", "brownsville", "college station", "corpus christi", "dallas", "el paso",
+    "fort worth", "galveston", "harlingen", "houston", "killeen", "laredo", "longview", "lubbock", "mcallen",
+    "midland", "san antonio", "texarkana", "tyler", "victoria", "waco", "bakersfield", "burbank", "fresno",
+    "los angeles", "long beach", "modesto", "ontario", "palm springs", "riverside", "sacramento", "san diego",
+    "san francisco", "san jose", "santa ana", "santa barbara", "santa rosa", "simi valley", "stockton",
     "torrance", "visalia"
   ];
-  
+
   const startDate = new Date("2024-09-01");
   const endDate = new Date("2024-12-01");
 
@@ -238,9 +237,16 @@ function validateStayForm() {
     return false;
   }
 
-  // Calculate required rooms
+  // Validate rooms based on guest count
   const totalGuests = adults + children;
-  let roomsNeeded = Math.ceil(totalGuests / 2);
+  const roomsNeeded = Math.ceil(totalGuests / 2); // Each room can accommodate 2 guests (excluding infants)
+
+  // Display error if guests exceed room capacity (adults + children only)
+  if (adults + children > roomsNeeded * 2) {
+    displayError("The number of adults and children exceeds the capacity of the rooms needed.", "stayError");
+    document.getElementById("staySummary").style.display = "none";
+    return false;
+  }
 
   // Display summary
   const summary = `
@@ -261,24 +267,25 @@ function validateStayForm() {
   return true;
 }
 
+
 // Car Form Validation
 function validateCarForm() {
   const city = document.getElementById("carCity").value.trim().toLowerCase();
-  const carType = document.getElementById("carType").value;
+  const carType = document.getElementById("carType").value.toLowerCase(); // Normalize car type to lower case
   const checkInDateInput = document.getElementById("checkInDate").value;
   const checkOutDateInput = document.getElementById("checkOutDate").value;
   const checkInDate = checkInDateInput ? new Date(checkInDateInput) : null;
   const checkOutDate = checkOutDateInput ? new Date(checkOutDateInput) : null;
 
   const validCities = [
-    "abilene", "amarillo", "austin", "brownsville", "college station", "corpus christi", "dallas", "el paso", 
-    "fort worth", "galveston", "harlingen", "houston", "killeen", "laredo", "longview", "lubbock", "mcallen", 
-    "midland", "san antonio", "texarkana", "tyler", "victoria", "waco", "bakersfield", "burbank", "fresno", 
-    "los angeles", "long beach", "modesto", "ontario", "palm springs", "riverside", "sacramento", "san diego", 
-    "san francisco", "san jose", "santa ana", "santa barbara", "santa rosa", "simi valley", "stockton", 
+    "abilene", "amarillo", "austin", "brownsville", "college station", "corpus christi", "dallas", "el paso",
+    "fort worth", "galveston", "harlingen", "houston", "killeen", "laredo", "longview", "lubbock", "mcallen",
+    "midland", "san antonio", "texarkana", "tyler", "victoria", "waco", "bakersfield", "burbank", "fresno",
+    "los angeles", "long beach", "modesto", "ontario", "palm springs", "riverside", "sacramento", "san diego",
+    "san francisco", "san jose", "santa ana", "santa barbara", "santa rosa", "simi valley", "stockton",
     "torrance", "visalia"
   ];
-  
+
   const validCarTypes = ["economy", "suv", "compact", "midsize"];
   const startDate = new Date("2024-09-01");
   const endDate = new Date("2024-12-01");
@@ -389,6 +396,13 @@ function validateCruiseForm() {
   const totalGuests = adults + children;
   let roomsNeeded = Math.ceil(totalGuests / 2);
 
+  // Validate room guest limit
+  if (adults + children > roomsNeeded * 2) {
+    $("#cruiseError").text("You can have a maximum of 2 guests per room (excluding infants).").css("color", "red");
+    $("#cruiseSummary").hide();
+    return false;
+  }
+
   // If all validations pass, display the summary
   const summary = `
     <h3>Cruise Booking Summary</h3>
@@ -407,8 +421,9 @@ function validateCruiseForm() {
   return true;
 }
 
+
 // Apply settings from localStorage on page load
-document.addEventListener("DOMContentLoaded", function() {
+document.addEventListener("DOMContentLoaded", function () {
   applySavedSettings();
 });
 
@@ -436,10 +451,10 @@ function applySavedSettings() {
         mainContent.style.fontSize = "14px";
         break;
       case "medium":
-        mainContent.style.fontSize = "16px";
+        mainContent.style.fontSize = "20px";
         break;
       case "large":
-        mainContent.style.fontSize = "18px";
+        mainContent.style.fontSize = "40px";
         break;
       default:
         mainContent.style.fontSize = "16px";
