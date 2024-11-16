@@ -1,4 +1,3 @@
-<?xml version='1.0' encoding='utf-8'?>
 <flights>
 	<flight>
 		<flightId>TX0001</flightId>
@@ -28432,7 +28431,7 @@
 		<arrivalDate>2024-11-25</arrivalDate>
 		<departureTime>08:00 AM</departureTime>
 		<arrivalTime>10:00 AM</arrivalTime>
-		<availableSeats>5</availableSeats>
+		<availableSeats>24</availableSeats>
 		<price>225</price>
 	</flight>
 	<flight>
@@ -33855,7 +33854,7 @@
 		<arrivalDate>2024-11-28</arrivalDate>
 		<departureTime>07:00 AM</departureTime>
 		<arrivalTime>10:00 AM</arrivalTime>
-		<availableSeats>4</availableSeats>
+		<availableSeats>40000</availableSeats>
 		<price>258</price>
 	</flight>
 	<flight>
@@ -33866,7 +33865,7 @@
 		<arrivalDate>2024-11-22</arrivalDate>
 		<departureTime>09:00 AM</departureTime>
 		<arrivalTime>11:00 AM</arrivalTime>
-		<availableSeats>3</availableSeats>
+		<availableSeats>9997</availableSeats>
 		<price>237</price>
 	</flight>
 	<flight>

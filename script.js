@@ -221,50 +221,6 @@ function searchFlightsInAPI(origin, destination, departureDate, tripType, return
     .catch((err) => console.error("Failed to fetch flights data:", err));
 }
 
-
-// Function to search flights in XML and display results
-// function searchFlightsInXML(origin, destination, departureDate, tripType, returnDate, adults, children, infants) {
-//   fetch("flights.xml")
-//     .then((response) => response.text())
-//     .then((xmlStr) => {
-//       const parser = new DOMParser();
-//       const xmlDoc = parser.parseFromString(xmlStr, "text/xml");
-//       const flights = xmlDoc.getElementsByTagName("flight");
-//       const matchingFlights = [];
-
-//       for (const flight of flights) {
-//         const flightOrigin = flight.getElementsByTagName("origin")[0].textContent.toLowerCase();
-//         const flightDestination = flight.getElementsByTagName("destination")[0].textContent.toLowerCase();
-//         const flightDepartureDate = flight.getElementsByTagName("departureDate")[0].textContent;
-//         const availableSeats = parseInt(flight.getElementsByTagName("availableSeats")[0].textContent);
-
-//         if (
-//           flightOrigin === origin &&
-//           flightDestination === destination &&
-//           flightDepartureDate === departureDate &&
-//           availableSeats >= (adults + children + infants)
-//         ) {
-//           matchingFlights.push({
-//             flightId: flight.getElementsByTagName("flightId")[0].textContent,
-//             departureDate: flightDepartureDate,
-//             arrivalDate: flight.getElementsByTagName("arrivalDate")[0].textContent,
-//             departureTime: flight.getElementsByTagName("departureTime")[0].textContent,
-//             arrivalTime: flight.getElementsByTagName("arrivalTime")[0].textContent,
-//             availableSeats: availableSeats,
-//             price: parseInt(flight.getElementsByTagName("price")[0].textContent)
-//           });
-//         }
-//       }
-
-//       if (matchingFlights.length > 0) {
-//         displayFlightResults(matchingFlights, tripType, returnDate, adults, children, infants);
-//       } else {
-//         displayError("No flights found for the selected dates.", "flightError");
-//       }
-//     })
-//     .catch((err) => console.error("Failed to fetch XML:", err));
-// }
-
 // Function to display flight results
 function displayFlightResults(flights, tripType, returnDate, adults, children, infants) {
   let summaryHTML = "<h3>Available Flights</h3><ul>";
@@ -290,9 +246,16 @@ function displayFlightResults(flights, tripType, returnDate, adults, children, i
 
 // Function to add flight to cart
 function addToCart(flightId, departureDate, arrivalDate, departureTime, arrivalTime, price, adults, children, infants) {
+
   console.log('Added flight to cart');
 
   const cart = JSON.parse(localStorage.getItem("cart")) || [];
+
+  if (cart.length === 1) {
+    alert("You can only add one flight at a time.");
+    return;
+  }
+
   const totalPrice = (adults * price) + (children * price * 0.7) + (infants * price * 0.1);
 
   cart.push({
@@ -320,34 +283,144 @@ function generateBookingId() {
 
 // Display cart contents on cart.html
 function displayCart() {
+  console.log('hi');
+
   const cart = JSON.parse(localStorage.getItem("cart")) || [];
 
   console.log(cart);
 
   if (cart.length === 0) {
-    document.getElementById("cartSummary2").innerHTML = "<p>No items in the cart yet.</p>";
+    // document.getElementById("cartSummary2").innerHTML = "<p>No Flight in the cart yet.</p>";
     return;
   }
 
   let cartHTML = "<h3>Your Flight Cart</h3><ul>";
-  cart.forEach((item) => {
-    cartHTML += `
+  // cart.forEach((item) => {
+  cartHTML += `
       <li>
-        <strong>Booking ID:</strong> ${item.bookingId}<br>
-        <strong>Flight ID:</strong> ${item.flightId}<br>
-        <strong>Departure:</strong> ${item.departureDate} (${item.departureTime})<br>
-        <strong>Arrival:</strong> ${item.arrivalDate} (${item.arrivalTime})<br>
-        <strong>Total Price:</strong> $${item.totalPrice.toFixed(2)}
+        <strong>Booking ID:</strong> ${cart[0].bookingId}<br>
+        <strong>Flight ID:</strong> ${cart[0].flightId}<br>
+        <strong>Departure:</strong> ${cart[0].departureDate} (${cart[0].departureTime})<br>
+        <strong>Arrival:</strong> ${cart[0].arrivalDate} (${cart[0].arrivalTime})<br>
+        <strong>Total Price:</strong> $${cart[0].totalPrice.toFixed(2)}
       </li>
       <hr>
     `;
-  });
+  // });
   cartHTML += "</ul>";
+
+  const passengers = cart[0].adults + cart[0].children + cart[0].infants;
+
+  console.log(passengers);
+
+  for (let index = 0; index < passengers; index++) {
+
+    cartHTML += `
+    <hr>
+    <p>Passenger ${index + 1}:</p>
+    <hr>
+    <label for="firstName">First Name</label>
+    <input type="text" id="firstName${index + 1}" name="firstName" required pattern="[A-Za-z]+" title="First name should only contain letters.">
+    
+    <label for="lastName">Last Name</label>
+    <input type="text" id="lastName${index + 1}" name="lastName" required pattern="[A-Za-z]+" title="Last name should only contain letters.">
+    
+    <label for="dob">Date of Birth</label>
+    <input type="date" id="dob${index + 1}" name="dob" required>
+    
+    <label for="ssn">Social Security Number (SSN)</label>
+    <input type="text" id="ssn${index + 1}" name="ssn" required pattern="\d{3}-\d{2}-\d{4}" title="SSN must be in the format: 123-45-6789.">
+    </br>
+    `
+  }
+
 
   document.getElementById("cartSummary2").innerHTML = cartHTML;
 }
 
-displayCart()
+// Function to collect passenger data and submit via Fetch
+function bookFlight(event) {
+  if (event) {
+    event.preventDefault(); // Prevent default browser behavior
+  }
+
+  const cart = JSON.parse(localStorage.getItem("cart")) || [];
+  const passengerCount = cart[0].adults + cart[0].children + cart[0].infants;
+
+  const passengers = [];
+  const flightId = cart[0].flightId
+
+  // Collect passenger details
+  for (let i = 0; i < passengerCount; i++) {
+    const firstName = document.getElementById(`firstName${i + 1}`).value.trim();
+    const lastName = document.getElementById(`lastName${i + 1}`).value.trim();
+    const dob = document.getElementById(`dob${i + 1}`).value;
+    const ssn = document.getElementById(`ssn${i + 1}`).value.trim();
+
+    passengers.push({ firstName, lastName, dob, ssn });
+  }
+
+  console.log(passengers);
+
+  // Prepare the data for the POST request
+  const bookingData = {
+    flightId: flightId,
+    passengers: passengers,
+  };
+
+  // Make the POST request using fetch
+  fetch("http://localhost:3000/book-flight", {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify(bookingData),
+  })
+    .then((response) => {
+      if (!response.ok) {
+        throw new Error(response);
+      }
+      return response.json();
+    })
+    .then((data) => {
+      // alert("Flight booked successfully! Booking details: " + JSON.stringify(data));
+      // localStorage.removeItem("cart"); // Clear the cart
+      // Fill the UI with booking details
+      const bookingDetails = data.bookingDetails;
+      let bookingHTML = `<h3>Booking Confirmation</h3>`;
+      bookingHTML += `
+  <p><strong>Booking ID:</strong> ${bookingDetails.bookingId}</p>
+  <p><strong>Flight Details:</strong></p>
+  <ul>
+    <li><strong>Flight ID:</strong> ${bookingDetails.flightDetails.flightId}</li>
+    <li><strong>Origin:</strong> ${bookingDetails.flightDetails.origin}</li>
+    <li><strong>Destination:</strong> ${bookingDetails.flightDetails.destination}</li>
+    <li><strong>Departure Date:</strong> ${bookingDetails.flightDetails.departureDate}</li>
+    <li><strong>Arrival Date:</strong> ${bookingDetails.flightDetails.arrivalDate}</li>
+    <li><strong>Departure Time:</strong> ${bookingDetails.flightDetails.departureTime}</li>
+    <li><strong>Arrival Time:</strong> ${bookingDetails.flightDetails.arrivalTime}</li>
+    <li><strong>Price:</strong> $${bookingDetails.flightDetails.price.toFixed(2)}</li>
+  </ul>
+  <p><strong>Passengers:</strong></p>
+  <ul>
+`;
+      bookingDetails.passengers.forEach((passenger, index) => {
+        bookingHTML += `
+    <li>Passenger ${index + 1}: ${passenger.firstName} ${passenger.lastName} (DOB: ${passenger.dob}) | SSN : ${passenger.ssn}</li>
+  `;
+      });
+      bookingHTML += `</ul>`;
+
+      document.getElementById("cartSummary2").innerHTML = bookingHTML;
+    })
+    .catch((error) => {
+      alert("Failed to book flight: " + error.message);
+      console.error("Error:", error);
+    });
+}
+
+
+// displayCart()
 
 // Utility functions
 function displayError(message, elementId) {
@@ -420,12 +493,12 @@ function validateStayForm() {
   const totalGuests = adults + children;
   let roomsNeeded = Math.ceil(totalGuests / 2);
 
-  searchHotels(city, checkInDateInput, checkOutDateInput, roomsNeeded);
+  searchHotels(city, checkInDateInput, checkOutDateInput, roomsNeeded, adults, children, infants);
   return true;
 }
 
 // Function to fetch and display hotels from API
-function searchHotels(city, checkInDate, checkOutDate, roomsNeeded) {
+function searchHotels(city, checkInDate, checkOutDate, roomsNeeded, adults, children, infants) {
   fetch("http://localhost:3000/hotels") // Fetch the hotels JSON from the API endpoint
     .then((response) => {
       if (!response.ok) {
@@ -439,7 +512,7 @@ function searchHotels(city, checkInDate, checkOutDate, roomsNeeded) {
       );
 
       if (availableHotels.length > 0) {
-        displayHotelResults(availableHotels, checkInDate, checkOutDate, roomsNeeded);
+        displayHotelResults(availableHotels, checkInDate, checkOutDate, roomsNeeded, adults, children, infants);
       } else {
         displayError("No hotels found for the selected criteria.", "stayError");
       }
@@ -449,7 +522,7 @@ function searchHotels(city, checkInDate, checkOutDate, roomsNeeded) {
 
 
 // Function to display hotel results
-function displayHotelResults(hotels, checkInDate, checkOutDate, roomsNeeded) {
+function displayHotelResults(hotels, checkInDate, checkOutDate, roomsNeeded, adults, children, infants) {
   let summaryHTML = "<h3>Available Hotels</h3><ul>";
   hotels.forEach((hotel) => {
     summaryHTML += `
@@ -461,7 +534,7 @@ function displayHotelResults(hotels, checkInDate, checkOutDate, roomsNeeded) {
         <strong>Check-Out Date:</strong> ${checkOutDate}<br>
         <strong>Price Per Night:</strong> $${hotel.pricePerNight}<br>
         <strong>Rooms Needed:</strong> ${roomsNeeded}
-        <button onclick="addHotelToCart('${hotel.hotelId}', '${hotel.name}', '${hotel.city}', '${checkInDate}', '${checkOutDate}', ${hotel.pricePerNight}, ${roomsNeeded})">Add to Cart</button>
+        <button onclick="addHotelToCart('${hotel.hotelId}', '${hotel.name}', '${hotel.city}', '${checkInDate}', '${checkOutDate}', ${hotel.pricePerNight}, ${roomsNeeded}, ${adults}, ${children}, ${infants})">Add to Cart</button>
       </li>
       <hr>
     `;
@@ -472,9 +545,9 @@ function displayHotelResults(hotels, checkInDate, checkOutDate, roomsNeeded) {
 }
 
 // Function to add hotel to cart
-function addHotelToCart(hotelId, name, city, checkInDate, checkOutDate, pricePerNight, rooms) {
+function addHotelToCart(hotelId, name, city, checkInDate, checkOutDate, pricePerNight, rooms, adults, children, infants) {
   console.log('Added hotels to cart');
-  
+
   const cart = JSON.parse(localStorage.getItem("hotelCart")) || [];
   const totalPrice = pricePerNight * rooms * (new Date(checkOutDate) - new Date(checkInDate)) / (1000 * 60 * 60 * 24);
 
@@ -486,13 +559,16 @@ function addHotelToCart(hotelId, name, city, checkInDate, checkOutDate, pricePer
     checkInDate,
     checkOutDate,
     pricePerNight,
+    adults,
+    children,
+    infants,
     rooms,
-    totalPrice
+    totalPrice,
   });
 
   localStorage.setItem("hotelCart", JSON.stringify(cart));
   console.log(cart);
-  
+
   alert("Hotel added to cart!");
 }
 
@@ -500,9 +576,9 @@ function addHotelToCart(hotelId, name, city, checkInDate, checkOutDate, pricePer
 function displayHotelCart() {
   const cart = JSON.parse(localStorage.getItem("hotelCart")) || [];
   console.log(cart);
-  
+
   if (cart.length === 0) {
-    document.getElementById("cartSummary").innerHTML = "<p>No items in the cart yet.</p>";
+    // document.getElementById("cartSummary").innerHTML = "<p>No Hotels in the cart yet.</p>";
     return;
   }
 
@@ -525,6 +601,77 @@ function displayHotelCart() {
 }
 
 displayHotelCart()
+
+function bookHotels() {
+  const cart = JSON.parse(localStorage.getItem("hotelCart")) || [];
+
+  if (!cart.length) {
+    alert("No hotels selected for booking.");
+    return;
+  }
+
+  const bookings = cart.map((hotel) => ({
+    hotelId: hotel.hotelId,
+    checkInDate: hotel.checkInDate,
+    checkOutDate: hotel.checkOutDate,
+    adults: hotel.adults,
+    children: hotel.children,
+    infants: hotel.infants,
+  }));
+
+  fetch("http://localhost:3000/book-hotels", {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify({ bookings }),
+  })
+    .then((response) => {
+      if (!response.ok) {
+        throw new Error(response.statusText);
+      }
+      return response.json();
+    })
+    .then((data) => {
+      alert("Hotels booked successfully!");
+
+      const bookingResults = data.bookingResults;
+      let bookingHTML = `<h3>Booking Confirmations</h3>`;
+
+      bookingResults.forEach((booking) => {
+        bookingHTML += `
+          <p><strong>Booking ID:</strong> ${booking.bookingId}</p>
+          <p><strong>Hotel Details:</strong></p>
+          <ul>
+            <li><strong>Hotel Name:</strong> ${booking.name}</li>
+            <li><strong>City:</strong> ${booking.city}</li>
+            <li><strong>Price Per Night:</strong> $${booking.pricePerNight.toFixed(2)}</li>
+          </ul>
+          <p><strong>Stay Details:</strong></p>
+          <ul>
+            <li><strong>Check-In Date:</strong> ${booking.checkInDate}</li>
+            <li><strong>Check-Out Date:</strong> ${booking.checkOutDate}</li>
+            <li><strong>Total Guests:</strong> ${booking.adults + booking.children + booking.infants}</li>
+            <li><strong>Adults:</strong> ${booking.adults}</li>
+            <li><strong>Children:</strong> ${booking.children}</li>
+            <li><strong>Infants:</strong> ${booking.infants}</li>
+            <li><strong>Rooms:</strong> ${booking.rooms}</li>
+            <li><strong>Total Price:</strong> $${booking.totalPrice.toFixed(2)}</li>
+          </ul>
+          <hr>
+        `;
+      });
+
+      document.getElementById("cartSummary").innerHTML = bookingHTML;
+      localStorage.removeItem("hotelCart");
+
+    })
+    .catch((error) => {
+      alert("Failed to book hotels: " + error.message);
+      console.error("Error:", error);
+    });
+}
+
 
 // Generate unique booking ID
 function generateBookingId() {
