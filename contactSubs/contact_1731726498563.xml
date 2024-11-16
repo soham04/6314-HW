@@ -1,0 +1,10 @@
+
+        <contact>
+            <firstName>John</firstName>
+            <lastName>Doe</lastName>
+            <phone>1234567890</phone>
+            <email>john.doe@example.com</email>
+            <gender>Male</gender>
+            <comment>Test comment</comment>
+        </contact>
+    

@@ -1,0 +1,113 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<flights>
+    <flight>
+        <id>FL001</id>
+        <origin>Dallas</origin>
+        <destination>Los Angeles</destination>
+        <departureDate>2024-09-15</departureDate>
+        <arrivalDate>2024-09-15</arrivalDate>
+        <departureTime>10:00 AM</departureTime>
+        <arrivalTime>12:00 PM</arrivalTime>
+        <seats>100</seats>
+        <price>200</price>
+    </flight>
+    <flight>
+        <id>FL002</id>
+        <origin>Houston</origin>
+        <destination>San Francisco</destination>
+        <departureDate>2024-09-16</departureDate>
+        <arrivalDate>2024-09-16</arrivalDate>
+        <departureTime>1:00 PM</departureTime>
+        <arrivalTime>3:00 PM</arrivalTime>
+        <seats>50</seats>
+        <price>150</price>
+    </flight>
+    <flight>
+        <id>FL003</id>
+        <origin>New York</origin>
+        <destination>Chicago</destination>
+        <departureDate>2024-09-17</departureDate>
+        <arrivalDate>2024-09-17</arrivalDate>
+        <departureTime>9:00 AM</departureTime>
+        <arrivalTime>11:00 AM</arrivalTime>
+        <seats>200</seats>
+        <price>250</price>
+    </flight>
+    <flight>
+        <id>FL004</id>
+        <origin>Miami</origin>
+        <destination>Atlanta</destination>
+        <departureDate>2024-09-18</departureDate>
+        <arrivalDate>2024-09-18</arrivalDate>
+        <departureTime>8:00 AM</departureTime>
+        <arrivalTime>10:30 AM</arrivalTime>
+        <seats>120</seats>
+        <price>180</price>
+    </flight>
+    <flight>
+        <id>FL005</id>
+        <origin>Seattle</origin>
+        <destination>Denver</destination>
+        <departureDate>2024-09-19</departureDate>
+        <arrivalDate>2024-09-19</arrivalDate>
+        <departureTime>2:00 PM</departureTime>
+        <arrivalTime>4:30 PM</arrivalTime>
+        <seats>90</seats>
+        <price>220</price>
+    </flight>
+    <flight>
+        <id>FL006</id>
+        <origin>Boston</origin>
+        <destination>Orlando</destination>
+        <departureDate>2024-09-20</departureDate>
+        <arrivalDate>2024-09-20</arrivalDate>
+        <departureTime>11:00 AM</departureTime>
+        <arrivalTime>2:00 PM</arrivalTime>
+        <seats>150</seats>
+        <price>300</price>
+    </flight>
+    <flight>
+        <id>FL007</id>
+        <origin>Chicago</origin>
+        <destination>Las Vegas</destination>
+        <departureDate>2024-09-21</departureDate>
+        <arrivalDate>2024-09-21</arrivalDate>
+        <departureTime>7:00 PM</departureTime>
+        <arrivalTime>9:30 PM</arrivalTime>
+        <seats>70</seats>
+        <price>200</price>
+    </flight>
+    <flight>
+        <id>FL008</id>
+        <origin>San Diego</origin>
+        <destination>Phoenix</destination>
+        <departureDate>2024-09-22</departureDate>
+        <arrivalDate>2024-09-22</arrivalDate>
+        <departureTime>5:00 PM</departureTime>
+        <arrivalTime>6:30 PM</arrivalTime>
+        <seats>80</seats>
+        <price>120</price>
+    </flight>
+    <flight>
+        <id>FL009</id>
+        <origin>Las Vegas</origin>
+        <destination>Portland</destination>
+        <departureDate>2024-09-23</departureDate>
+        <arrivalDate>2024-09-23</arrivalDate>
+        <departureTime>6:00 AM</departureTime>
+        <arrivalTime>8:30 AM</arrivalTime>
+        <seats>110</seats>
+        <price>240</price>
+    </flight>
+    <flight>
+        <id>FL010</id>
+        <origin>Denver</origin>
+        <destination>Salt Lake City</destination>
+        <departureDate>2024-09-24</departureDate>
+        <arrivalDate>2024-09-24</arrivalDate>
+        <departureTime>4:00 PM</departureTime>
+        <arrivalTime>5:30 PM</arrivalTime>
+        <seats>100</seats>
+        <price>180</price>
+    </flight>
+</flights>

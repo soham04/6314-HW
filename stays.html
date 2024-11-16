@@ -1,70 +1,87 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-  <meta charset="UTF-8">
-  <title>Travel Deals - Stays</title>
-  <link rel="stylesheet" href="mystyle.css">
-  <script src="script.js" defer></script>
-</head>
-<body>
-  <header>
-    <h1>Travel Deals</h1>
-  </header>
-  
-  <div class="nav-container">
-    <nav class="navigation">
-      <a href="index.html" class="nav-link">Home</a>
-      <a href="flights.html" class="nav-link">Flights</a>
-      <a href="stays.html" class="nav-link">Stays</a>
-      <a href="cars.html" class="nav-link">Cars</a>
-      <a href="cruises.html" class="nav-link">Cruises</a>
-      <a href="contact.html" class="nav-link">Contact Us</a>
-      <a href="settings.html" class="nav-link">Settings</a>
-    </nav>
-
-    <div id="date-time" class="date-time"></div>
-  </div>
-  
-  <div class="container">
-    <aside>
-      <h2>Stays</h2>
-      <p>Find comfortable stays for your journey!</p>
-    </aside>
-    <main>
-      <h2>Book Your Stay</h2>
-      <div id="stayError" class="error"></div>
-
-      <form id="stayForm">
-        <label for="city">City:</label>
-        <input type="text" id="city" name="city" placeholder="Austin" required>
-
-        <label for="checkInDate">Check-In Date:</label>
-        <input type="date" id="checkInDate" name="checkInDate" required>
-
-        <label for="checkOutDate">Check-Out Date:</label>
-        <input type="date" id="checkOutDate" name="checkOutDate" required>
-
-        <label for="adults">Adults:</label>
-        <input type="number" id="adults" name="adults" placeholder="0" min="0" required>
-
-        <label for="children">Children:</label>
-        <input type="number" id="children" name="children" placeholder="0" min="0" required>
-
-        <label for="infants">Infants:</label>
-        <input type="number" id="infants" name="infants" placeholder="0" min="0" required>
-
-        <button type="button" onclick="validateStayForm()">Search</button>
-      </form>
-      <div id="staySummary" class="summary" style="display:none;"></div>
-    </main>
-  </div>
-  
-  <footer>
-    <p>&copy; 2024 Travel Deals. All rights reserved.</p>
-    <p>CS 6314.002 | Assignment 2</p>
-    <p>Alvin Anto - axa220139</p>
-    <p>Wasey Mulla - wam180001</p>
-    <p>Soham Shinde - sxs230005</p>
-  </footer>
-</body>
+  <head>
+    <meta charset="UTF-8" />
+    <title>Travel Deals - Stays</title>
+    <link rel="stylesheet" href="mystyle.css" />
+    <script src="script.js" defer></script>
+  </head>
+  <body>
+    <header>
+      <h1>Travel Deals</h1>
+    </header>
+    <div class="nav-container">
+      <nav class="navigation">
+        <a href="index.html" class="nav-link">Home</a>
+        <a href="flights.html" class="nav-link">Flights</a>
+        <a href="stays.html" class="nav-link">Stays</a>
+        <a href="cars.html" class="nav-link">Cars</a>
+        <a href="cruises.html" class="nav-link">Cruises</a>
+        <a href="contact.html" class="nav-link">Contact Us</a>
+        <a href="cart.html" class="nav-link">Cart</a>
+        <a href="settings.html" class="nav-link">Settings</a>
+      </nav>
+      <div id="date-time" class="date-time"></div>
+    </div>
+    <div class="container">
+      <aside>
+        <h2>Stays</h2>
+        <p>Find comfortable stays for your journey!</p>
+      </aside>
+      <main>
+        <h2>Book Your Stay</h2>
+        <div id="stayError" class="error"></div>
+        <form id="stayForm">
+          <label for="city">City:</label>
+          <input
+            type="text"
+            id="city"
+            name="city"
+            placeholder="Austin"
+            required
+          />
+          <label for="checkInDate">Check-In Date:</label>
+          <input type="date" id="checkInDate" name="checkInDate" required />
+          <label for="checkOutDate">Check-Out Date:</label>
+          <input type="date" id="checkOutDate" name="checkOutDate" required />
+          <label for="adults">Adults:</label>
+          <input
+            type="number"
+            id="adults"
+            name="adults"
+            placeholder="0"
+            min="0"
+            required
+          />
+          <label for="children">Children:</label>
+          <input
+            type="number"
+            id="children"
+            name="children"
+            placeholder="0"
+            min="0"
+            required
+          />
+          <label for="infants">Infants:</label>
+          <input
+            type="number"
+            id="infants"
+            name="infants"
+            placeholder="0"
+            min="0"
+            required
+          />
+          <button type="button" onclick="validateStayForm()">Search</button>
+        </form>
+        <div id="staySummary" class="summary" style="display: none"></div>
+      </main>
+    </div>
+    <footer>
+      <p>&copy; 2024 Travel Deals. All rights reserved.</p>
+      <p>CS 6314.002 | Assignment 2</p>
+      <p>Alvin Anto - axa220139</p>
+      <p>Wasey Mulla - wam180001</p>
+      <p>Soham Shinde - sxs230005</p>
+    </footer>
+  </body>
 </html>
