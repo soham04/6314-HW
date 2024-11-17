@@ -610,6 +610,9 @@ function bookHotels() {
     return;
   }
 
+  console.log(cart);
+  
+
   const bookings = cart.map((hotel) => ({
     hotelId: hotel.hotelId,
     checkInDate: hotel.checkInDate,

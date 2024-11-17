@@ -800,5 +800,19 @@
         "ssn": ""
       }
     ]
+  },
+  {
+    "bookingId": "BKG-H-1731822045903-816",
+    "hotelId": "H0061",
+    "name": "Sunset Resort Dallas",
+    "city": "Dallas",
+    "checkInDate": "2024-11-09",
+    "checkOutDate": "2024-11-15",
+    "pricePerNight": 91,
+    "adults": 1,
+    "children": 0,
+    "infants": 0,
+    "rooms": 1,
+    "totalPrice": 546
   }
 ]

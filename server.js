@@ -193,6 +193,111 @@ app.post("/book-flight", (req, res) => {
     });
 });
 
+app.post("/book-hotels", (req, res) => {
+    const { bookings } = req.body;
+
+    if (!Array.isArray(bookings) || bookings.length === 0) {
+        return res
+            .status(400)
+            .send("Invalid request. Please provide an array of hotel bookings.");
+    }
+
+    // Read hotels.json
+    const hotelsJsonPath = path.join(__dirname, 'hotels.json');
+
+    fs.readFile(hotelsJsonPath, "utf-8", (err, data) => {
+        if (err) {
+            console.error("Error reading hotels.json:", err);
+            return res.status(500).send("Error reading hotel data.");
+        }
+
+        const hotels = JSON.parse(data);
+        const bookingResults = [];
+
+        for (const booking of bookings) {
+            const { hotelId, checkInDate, checkOutDate, adults, children, infants } = booking;
+
+            if (!hotelId || !checkInDate || !checkOutDate || (adults + children + infants) === 0) {
+                return res.status(400).send(
+                    "Each booking must include hotelId, checkInDate, checkOutDate, and at least one guest."
+                );
+            }
+
+            const hotel = hotels.find((hotel) => hotel.hotelId === hotelId);
+
+            if (!hotel) {
+                return res.status(404).send(`Hotel with ID ${hotelId} not found.`);
+            }
+
+            const totalGuests = adults + children + infants;
+            const rooms = Math.ceil(totalGuests / 2);
+
+            if (rooms > hotel.availableRooms) {
+                return res.status(400).send(`Not enough rooms available for hotel ID: ${hotelId}.`);
+            }
+
+            hotel.availableRooms -= rooms;
+
+            const checkIn = new Date(checkInDate);
+            const checkOut = new Date(checkOutDate);
+            const duration = Math.ceil((checkOut - checkIn) / (1000 * 60 * 60 * 24));
+            const totalPrice = hotel.pricePerNight * rooms * duration;
+
+            const bookingId = `BKG-H-${Date.now()}-${Math.floor(Math.random() * 1000)}`;
+
+            const bookingDetails = {
+                bookingId,
+                hotelId,
+                name: hotel.name,
+                city: hotel.city,
+                checkInDate,
+                checkOutDate,
+                pricePerNight: hotel.pricePerNight,
+                adults,
+                children,
+                infants,
+                rooms,
+                totalPrice,
+            };
+
+            bookingResults.push(bookingDetails);
+        }
+
+        fs.writeFile(hotelsJsonPath, JSON.stringify(hotels, null, 2), "utf-8", (err) => {
+            if (err) {
+                console.error("Error updating hotels.json:", err);
+                return res.status(500).send("Error updating hotel data.");
+            }
+
+            fs.readFile(bookingsFilePath, "utf-8", (err, bookingData) => {
+                if (err) {
+                    console.error("Error reading bookings file:", err);
+                    return res.status(500).send("Error reading bookings data.");
+                }
+
+                const allBookings = JSON.parse(bookingData);
+                allBookings.push(...bookingResults);
+
+                fs.writeFile(
+                    bookingsFilePath,
+                    JSON.stringify(allBookings, null, 2),
+                    "utf-8",
+                    (err) => {
+                        if (err) {
+                            console.error("Error saving bookings:", err);
+                            return res.status(500).send("Error saving booking data.");
+                        }
+
+                        res.status(200).send({
+                            message: "Hotels booked successfully.",
+                            bookingResults,
+                        });
+                    }
+                );
+            });
+        });
+    });
+});
 
 // Start the server
 app.listen(port, () => {
