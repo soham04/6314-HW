@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <title>Travel Deals - Flights</title>
+    <link rel="stylesheet" href="mystyle.css" />
+    <script src="script.js" defer></script>
+  </head>
+  <body>
+    <header>
+      <h1>Travel Deals</h1>
+    </header>
+    <div class="nav-container">
+      <nav class="navigation">
+        <a href="index.html" class="nav-link">Home</a>
+        <a href="flights.html" class="nav-link">Flights</a>
+        <a href="stays.html" class="nav-link">Stays</a>
+        <a href="cars.html" class="nav-link">Cars</a>
+        <a href="cruises.html" class="nav-link">Cruises</a>
+        <a href="contact.html" class="nav-link">Contact Us</a>
+        <a href="cart.html" class="nav-link">Cart</a>
+        <a href="settings.html" class="nav-link">Settings</a>
+      </nav>
+      <div id="date-time" class="date-time"></div>
+    </div>
+    <div class="container">
+      <aside>
+        <h2>Flights</h2>
+        <p>Book your flights at great prices!</p>
+      </aside>
+      <main>
+        <h2>Book Your Flight</h2>
+        <div id="flightError" class="error"></div>
+        <form id="flightForm">
+          <label for="tripType">Trip Type:</label>
+          <select id="tripType" name="tripType" onchange="toggleReturnDate()">
+            <option value="oneway">One Way</option>
+            <option value="roundtrip">Round Trip</option>
+          </select>
+          <label for="origin">Origin:</label>
+          <input
+            type="text"
+            id="origin"
+            name="origin"
+            placeholder="Dallas"
+            required
+          />
+          <label for="destination">Destination:</label>
+          <input
+            type="text"
+            id="destination"
+            name="destination"
+            placeholder="San Francisco"
+            required
+          />
+          <label for="departureDate">Departure Date:</label>
+          <input type="date" id="departureDate" name="departureDate" required />
+          <div id="returnDateContainer" style="display: none">
+            <label for="returnDate">Return Date:</label>
+            <input type="date" id="returnDate" name="returnDate" />
+          </div>
+          <label>Passengers:</label>
+          <span id="passengerIcon" onclick="togglePassengerForm()">👤</span>
+          <div id="passengerForm" style="display: none">
+            <label for="adults">Adults:</label>
+            <input
+              type="number"
+              id="adults"
+              name="adults"
+              placeholder="0"
+              min="0"
+              max="4"
+              required
+            />
+            <label for="children">Children:</label>
+            <input
+              type="number"
+              id="children"
+              name="children"
+              placeholder="0"
+              min="0"
+              max="4"
+              required
+            />
+            <label for="infants">Infants:</label>
+            <input
+              type="number"
+              id="infants"
+              name="infants"
+              placeholder="0"
+              min="0"
+              max="4"
+              required
+            />
+          </div>
+          <button type="button" onclick="validateFlightForm()">Search</button>
+        </form>
+        <div id="flightSummary" class="summary" style="display: none"></div>
+      </main>
+    </div>
+    <footer>
+      <p>&copy; 2024 Travel Deals. All rights reserved.</p>
+      <p>CS 6314.002 | Assignment 2</p>
+      <p>Alvin Anto - axa220139</p>
+      <p>Wasey Mulla - wam180001</p>
+      <p>Soham Shinde - sxs230005</p>
+    </footer>
+  </body>
+</html>

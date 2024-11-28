@@ -7,7 +7,7 @@
 		<arrivalDate>2024-10-10</arrivalDate>
 		<departureTime>01:30 AM</departureTime>
 		<arrivalTime>04:30 AM</arrivalTime>
-		<availableSeats>10</availableSeats>
+		<availableSeats>7</availableSeats>
 		<price>117</price>
 	</flight>
 	<flight>
@@ -28849,7 +28849,7 @@
 		<arrivalDate>2024-11-15</arrivalDate>
 		<departureTime>01:30 AM</departureTime>
 		<arrivalTime>03:30 AM</arrivalTime>
-		<availableSeats>6</availableSeats>
+		<availableSeats>5</availableSeats>
 		<price>116</price>
 	</flight>
 	<flight>
@@ -33865,7 +33865,7 @@
 		<arrivalDate>2024-11-22</arrivalDate>
 		<departureTime>09:00 AM</departureTime>
 		<arrivalTime>11:00 AM</arrivalTime>
-		<availableSeats>9997</availableSeats>
+		<availableSeats>9996</availableSeats>
 		<price>237</price>
 	</flight>
 	<flight>

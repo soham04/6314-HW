@@ -1,0 +1,44 @@
+<hotelBookings>
+    <booking>
+        <bookingId>BKG-H-1700000000000-123</bookingId>
+        <hotelId>H0061</hotelId>
+        <name>Sunset Resort Dallas</name>
+        <city>Dallas</city>
+        <checkInDate>2024-11-11</checkInDate>
+        <checkOutDate>2024-11-16</checkOutDate>
+        <pricePerNight>91</pricePerNight>
+        <adults>2</adults>
+        <children>1</children>
+        <infants>0</infants>
+        <rooms>2</rooms>
+        <totalPrice>910</totalPrice>
+    </booking>
+    <booking>
+        <bookingId>BKG-H-1731823599223-927</bookingId>
+        <hotelId>H0061</hotelId>
+        <name>Sunset Resort Dallas</name>
+        <city>Dallas</city>
+        <checkInDate>2024-11-14</checkInDate>
+        <checkOutDate>2024-11-15</checkOutDate>
+        <pricePerNight>91</pricePerNight>
+        <adults>1</adults>
+        <children>0</children>
+        <infants>0</infants>
+        <rooms>1</rooms>
+        <totalPrice>91</totalPrice>
+    </booking>
+    <booking>
+        <bookingId>BKG-H-1732239801941-904</bookingId>
+        <hotelId>H0040</hotelId>
+        <name>Luxury Hotel Brownsville</name>
+        <city>Brownsville</city>
+        <checkInDate>2024-09-01</checkInDate>
+        <checkOutDate>2024-09-07</checkOutDate>
+        <pricePerNight>130</pricePerNight>
+        <adults>1</adults>
+        <children>0</children>
+        <infants>0</infants>
+        <rooms>1</rooms>
+        <totalPrice>780</totalPrice>
+    </booking>
+</hotelBookings>

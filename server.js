@@ -82,6 +82,7 @@ app.get('/hotels', (req, res) => {
 });
 
 app.post("/book-flight", (req, res) => {
+    console.info('/book-flight')
     const { flightId, passengers } = req.body;
 
     // Validate input
@@ -194,6 +195,7 @@ app.post("/book-flight", (req, res) => {
 });
 
 app.post("/book-hotels", (req, res) => {
+    console.info('/book-hotels');
     const { bookings } = req.body;
 
     if (!Array.isArray(bookings) || bookings.length === 0) {
@@ -204,6 +206,7 @@ app.post("/book-hotels", (req, res) => {
 
     // Read hotels.json
     const hotelsJsonPath = path.join(__dirname, 'hotels.json');
+    const hotelBookingsXmlPath = path.join(__dirname, 'bookings', 'hotelBookings.xml');
 
     fs.readFile(hotelsJsonPath, "utf-8", (err, data) => {
         if (err) {
@@ -269,31 +272,41 @@ app.post("/book-hotels", (req, res) => {
                 return res.status(500).send("Error updating hotel data.");
             }
 
-            fs.readFile(bookingsFilePath, "utf-8", (err, bookingData) => {
-                if (err) {
-                    console.error("Error reading bookings file:", err);
-                    return res.status(500).send("Error reading bookings data.");
+            // Store bookings in hotelBookings.xml
+            fs.readFile(hotelBookingsXmlPath, "utf-8", (err, existingXmlData) => {
+                const { JSDOM } = require("jsdom");
+                const dom = err
+                    ? new JSDOM("<hotelBookings></hotelBookings>", { contentType: "text/xml" })
+                    : new JSDOM(existingXmlData, { contentType: "text/xml" });
+
+                const document = dom.window.document;
+
+                for (const booking of bookingResults) {
+                    const bookingElement = document.createElement("booking");
+
+                    for (const [key, value] of Object.entries(booking)) {
+                        const childElement = document.createElement(key);
+                        childElement.textContent = value;
+                        bookingElement.appendChild(childElement);
+                    }
+
+                    document.querySelector("hotelBookings").appendChild(bookingElement);
                 }
 
-                const allBookings = JSON.parse(bookingData);
-                allBookings.push(...bookingResults);
+                const serializer = new dom.window.XMLSerializer();
+                const updatedXml = serializer.serializeToString(document);
 
-                fs.writeFile(
-                    bookingsFilePath,
-                    JSON.stringify(allBookings, null, 2),
-                    "utf-8",
-                    (err) => {
-                        if (err) {
-                            console.error("Error saving bookings:", err);
-                            return res.status(500).send("Error saving booking data.");
-                        }
-
-                        res.status(200).send({
-                            message: "Hotels booked successfully.",
-                            bookingResults,
-                        });
+                fs.writeFile(hotelBookingsXmlPath, updatedXml, "utf-8", (err) => {
+                    if (err) {
+                        console.error("Error saving hotelBookings.xml:", err);
+                        return res.status(500).send("Error saving hotel bookings data.");
                     }
-                );
+
+                    res.status(200).send({
+                        message: "Hotels booked successfully.",
+                        bookingResults,
+                    });
+                });
             });
         });
     });
