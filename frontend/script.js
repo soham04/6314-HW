@@ -175,42 +175,24 @@ function validateFlightForm() {
 
 // Function to search flights from API and display results
 function searchFlightsInAPI(origin, destination, departureDate, tripType, returnDate, adults, children, infants) {
-  fetch("http://localhost:3000/flights") // Fetch the flights XML from the API endpoint
+  // Construct the URL with query parameters
+  const apiUrl = `http://localhost:3000/flights?origin=${encodeURIComponent(
+    origin
+  )}&destination=${encodeURIComponent(destination)}&departureDate=${encodeURIComponent(departureDate)}`;
+
+  fetch(apiUrl) // Send request with required query parameters
     .then((response) => {
       if (!response.ok) {
         throw new Error("Failed to fetch flights data from the API");
       }
-      return response.text();
+      return response.json(); // Expect JSON response from the server
     })
-    .then((xmlStr) => {
-      const parser = new DOMParser();
-      const xmlDoc = parser.parseFromString(xmlStr, "text/xml");
-      const flights = xmlDoc.getElementsByTagName("flight");
-      const matchingFlights = [];
-
-      for (const flight of flights) {
-        const flightOrigin = flight.getElementsByTagName("origin")[0].textContent.toLowerCase();
-        const flightDestination = flight.getElementsByTagName("destination")[0].textContent.toLowerCase();
-        const flightDepartureDate = flight.getElementsByTagName("departureDate")[0].textContent;
-        const availableSeats = parseInt(flight.getElementsByTagName("availableSeats")[0].textContent);
-
-        if (
-          flightOrigin === origin &&
-          flightDestination === destination &&
-          flightDepartureDate === departureDate &&
-          availableSeats >= (adults + children + infants)
-        ) {
-          matchingFlights.push({
-            flightId: flight.getElementsByTagName("flightId")[0].textContent,
-            departureDate: flightDepartureDate,
-            arrivalDate: flight.getElementsByTagName("arrivalDate")[0].textContent,
-            departureTime: flight.getElementsByTagName("departureTime")[0].textContent,
-            arrivalTime: flight.getElementsByTagName("arrivalTime")[0].textContent,
-            availableSeats: availableSeats,
-            price: parseInt(flight.getElementsByTagName("price")[0].textContent),
-          });
-        }
-      }
+    .then((flights) => {
+      const matchingFlights = flights.filter((flight) => {
+        // Check if the flight has enough available seats
+        const availableSeats = flight.available_seats;
+        return availableSeats >= adults + children + infants;
+      });
 
       if (matchingFlights.length > 0) {
         displayFlightResults(matchingFlights, tripType, returnDate, adults, children, infants);
@@ -218,21 +200,25 @@ function searchFlightsInAPI(origin, destination, departureDate, tripType, return
         displayError("No flights found for the selected dates.", "flightError");
       }
     })
-    .catch((err) => console.error("Failed to fetch flights data:", err));
+    .catch((err) => {
+      console.error("Failed to fetch flights data:", err);
+      displayError("Error fetching flights data. Please try again.", "flightError");
+    });
 }
 
 // Function to display flight results
 function displayFlightResults(flights, tripType, returnDate, adults, children, infants) {
+  console.log(flights);
+  
   let summaryHTML = "<h3>Available Flights</h3><ul>";
   flights.forEach((flight) => {
     summaryHTML += `
-      <li>
-        <strong>Flight ID:</strong> ${flight.flightId}<br>
-        <strong>Departure Date:</strong> ${flight.departureDate}<br>
-        <strong>Arrival Date:</strong> ${flight.arrivalDate}<br>
-        <strong>Departure Time:</strong> ${flight.departureTime}<br>
-        <strong>Arrival Time:</strong> ${flight.arrivalTime}<br>
-        <strong>Seats Available:</strong> ${flight.availableSeats}<br>
+        <strong>Flight ID:</strong> ${flight.flight_id}<br>
+        <strong>Departure Date:</strong> ${flight.departure_date}<br>
+        <strong>Arrival Date:</strong> ${flight.arrival_date}<br>
+        <strong>Departure Time:</strong> ${flight.departure_time}<br>
+        <strong>Arrival Time:</strong> ${flight.arrival_time}<br>
+        <strong>Seats Available:</strong> ${flight.available_seats}<br>
         <strong>Price:</strong> $${flight.price} per adult
         <button onclick="addToCart('${flight.flightId}', '${flight.departureDate}', '${flight.arrivalDate}', '${flight.departureTime}', '${flight.arrivalTime}', ${flight.price}, ${adults}, ${children}, ${infants})">Add to Cart</button>
       </li>
