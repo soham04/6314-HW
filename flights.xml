@@ -38449,10 +38449,10 @@
 		<origin>Santa Barbara</origin>
 		<destination>Tyler</destination>
 		<departureDate>2024-12-01</departureDate>
-		<arrivalDate>2024-12-01</arrivalDate>
+		<arrivalDate>2024-12-04</arrivalDate>
 		<departureTime>02:30 AM</departureTime>
 		<arrivalTime>05:30 AM</arrivalTime>
-		<availableSeats>7</availableSeats>
+		<availableSeats>27</availableSeats>
 		<price>234</price>
 	</flight>
 </flights>

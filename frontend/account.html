@@ -1,0 +1,247 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8" />
+    <title>Account Page</title>
+    <link rel="stylesheet" href="mystyle.css" />
+    <script src="script.js" defer></script>
+    <script>
+        document.addEventListener("DOMContentLoaded", () => {
+            loadUserInfo(); // Ensure user information is displayed
+        });
+    </script>
+
+</head>
+
+<body>
+    <!-- Header -->
+    <header>
+        <h1>User Account Management</h1>
+        <div class="user-info">Loading user info...</div>
+    </header>
+
+    <!-- Navigation -->
+    <div class="nav-container">
+        <nav class="navigation">
+            <a href="index.html" class="nav-link">Home</a>
+            <a href="flights.html" class="nav-link">Flights</a>
+            <a href="stays.html" class="nav-link">Stays</a>
+            <a href="cars.html" class="nav-link">Cars</a>
+            <a href="cruises.html" class="nav-link">Cruises</a>
+            <a href="contact.html" class="nav-link">Contact Us</a>
+            <a href="cart.html" class="nav-link">Cart</a>
+            <a href="settings.html" class="nav-link">Settings</a>
+            <a href="register.html" class="nav-link">Register</a>
+            <a href="account.html" class="nav-link">Account</a>
+        </nav>
+        <div id="date-time" class="date-time"></div>
+    </div>
+
+    <!-- Main Container -->
+    <div class="container">
+        <!-- Sidebar -->
+        <aside>
+            <h2>Account Options</h2>
+            <p>Manage your bookings and retrieve specific data.</p>
+            <ul>
+                <li>View your booked flights</li>
+                <li>View your booked hotels</li>
+                <li>Filter data by specific criteria</li>
+            </ul>
+        </aside>
+
+        <!-- Main Content -->
+        <main>
+            <h2>Account Management</h2>
+
+            <!-- Section: Retrieve Bookings by IDs -->
+            <section>
+                <h3>Retrieve Bookings by IDs</h3>
+                <form id="retrieveBookingsByIdForm">
+                    <label for="flightBookingId">Flight Booking ID</label>
+                    <input type="text" id="flightBookingId" name="flightBookingId"
+                        placeholder="Enter Flight Booking ID" />
+                    <label for="hotelBookingId">Hotel Booking ID</label>
+                    <input type="text" id="hotelBookingId" name="hotelBookingId" placeholder="Enter Hotel Booking ID" />
+                    <button type="button" onclick="retrieveBookingsByIds()">Retrieve</button>
+                </form>
+                <div id="bookingByIdResults" class="summary"></div>
+            </section>
+
+            <!-- Section: Retrieve Passengers by Flight Booking ID -->
+            <section>
+                <h3>Retrieve Passengers by Flight Booking ID</h3>
+                <form id="retrievePassengersForm">
+                    <label for="passengerFlightBookingId">Flight Booking ID</label>
+                    <input type="text" id="passengerFlightBookingId" name="passengerFlightBookingId"
+                        placeholder="Enter Flight Booking ID" />
+                    <button type="button" onclick="retrievePassengers()">Retrieve</button>
+                </form>
+                <div id="passengerResults" class="summary"></div>
+            </section>
+
+            <!-- Section: Filter Bookings by Date -->
+            <section>
+                <h3>Retrieve All Booked Flights and Hotels for SEP 2024</h3>
+                <button type="button" onclick="retrieveSep2024Bookings()">Retrieve</button>
+                <div id="sep2024BookingsResults" class="summary"></div>
+            </section>
+
+            <!-- Section: Retrieve Bookings by SSN -->
+            <section>
+                <h3>Retrieve Booked Flights by SSN</h3>
+                <form id="retrieveFlightsBySsnForm">
+                    <label for="ssn">SSN</label>
+                    <input type="text" id="ssn" name="ssn" placeholder="Enter SSN" />
+                    <button type="button" onclick="retrieveFlightsBySsn()">Retrieve</button>
+                </form>
+                <div id="flightsBySsnResults" class="summary"></div>
+            </section>
+
+            <!-- Section: Retrieve Bookings -->
+            <section>
+                <h3>Retrieve Bookings</h3>
+                <form id="retrieveBookingsForm">
+                    <label for="flightBookingId">Flight Booking ID</label>
+                    <input type="text" id="flightBookingId" name="flightBookingId"
+                        placeholder="Enter Flight Booking ID" />
+                    <label for="hotelBookingId">Hotel Booking ID</label>
+                    <input type="text" id="hotelBookingId" name="hotelBookingId" placeholder="Enter Hotel Booking ID" />
+                    <button type="button" onclick="retrieveBookings()">Retrieve</button>
+                </form>
+                <div id="bookingResults" class="summary"></div>
+            </section>
+
+            <!-- Section: Filter by Date -->
+            <section>
+                <h3>Filter Bookings by Date</h3>
+                <form id="filterByDateForm">
+                    <label for="startDate">Start Date</label>
+                    <input type="date" id="startDate" name="startDate" />
+                    <label for="endDate">End Date</label>
+                    <input type="date" id="endDate" name="endDate" />
+                    <button type="button" onclick="filterBookingsByDate()">Filter</button>
+                </form>
+                <div id="dateFilteredResults" class="summary"></div>
+            </section>
+
+            <!-- Section: Admin Filters -->
+            <section>
+                <h3>Admin Filters</h3>
+                <form id="adminFiltersForm">
+                    <label for="city">City</label>
+                    <input type="text" id="city" name="city" placeholder="Enter City Name" />
+                    <label for="ssn">SSN (Optional for User)</label>
+                    <input type="text" id="ssn" name="ssn" placeholder="Enter SSN (Optional)" />
+                    <button type="button" onclick="applyAdminFilters()">Apply Admin Filters</button>
+                </form>
+                <div id="adminFilterResults" class="summary"></div>
+            </section>
+
+            <!-- Admin: Load Hotels Section -->
+            <section id="adminHotelLoader" style="">
+                <h3>Admin: Load Hotels</h3>
+                <form id="hotelUploadForm" enctype="multipart/form-data" method="POST">
+                    <label for="hotelFile">Upload Hotels JSON:</label>
+                    <input type="file" id="hotelFile" name="hotelFile" accept=".json" required />
+                    <button type="button" onclick="uploadHotelData()">Upload</button>
+                </form>
+
+                <p id="uploadStatus" class="status-message"></p>
+            </section>
+
+            <!-- Admin: Load Flights Section -->
+            <section id="adminFlightLoader" style="">
+                <h3>Admin: Load Flights</h3>
+                <form id="flightUploadForm" enctype="multipart/form-data" method="POST">
+                    <label for="flightFile">Upload Flights XML:</label>
+                    <input type="file" id="flightFile" name="flightFile" accept=".xml" required />
+                    <button type="button" onclick="uploadFlightData()">Upload</button>
+                </form>
+                <p id="flightUploadStatus" class="status-message"></p>
+            </section>
+
+
+            <!-- Section: Flights Departing from Texas (Sep-Oct 2024) -->
+            <section>
+                <h3>Retrieve Flights Departing from Texas (Sep-Oct 2024)</h3>
+                <form id="texasFlightsForm">
+                    <button type="button" onclick="retrieveTexasFlights()">Retrieve</button>
+                </form>
+                <div id="texasFlightsResults" class="summary"></div>
+            </section>
+
+            <!-- Section: Hotels in Texas (Sep-Oct 2024) -->
+            <section>
+                <h3>Retrieve Hotels in Texas (Sep-Oct 2024)</h3>
+                <form id="texasHotelsForm">
+                    <button type="button" onclick="retrieveTexasHotels()">Retrieve</button>
+                </form>
+                <div id="texasHotelsResults" class="summary"></div>
+            </section>
+
+            <!-- Section: Most Expensive Booked Hotels -->
+            <section>
+                <h3>Retrieve Most Expensive Booked Hotels</h3>
+                <form id="expensiveHotelsForm">
+                    <button type="button" onclick="retrieveMostExpensiveHotels()">Retrieve</button>
+                </form>
+                <div id="expensiveHotelsResults" class="summary"></div>
+            </section>
+
+            <!-- Section: Flights with Infant Passengers -->
+            <section>
+                <h3>Retrieve Flights with Infant Passengers</h3>
+                <form id="infantFlightsForm">
+                    <button type="button" onclick="retrieveFlightsWithInfants()">Retrieve</button>
+                </form>
+                <div id="infantFlightsResults" class="summary"></div>
+            </section>
+
+            <!-- Section: Flights with Infant Passengers and At Least 5 Children -->
+            <section>
+                <h3>Retrieve Flights with Infant Passengers and At Least 5 Children</h3>
+                <form id="infantAndChildrenFlightsForm">
+                    <button type="button" onclick="retrieveFlightsWithInfantsAndChildren()">Retrieve</button>
+                </form>
+                <div id="infantAndChildrenFlightsResults" class="summary"></div>
+            </section>
+
+            <!-- Section: Most Expensive Booked Flights -->
+            <section>
+                <h3>Retrieve Most Expensive Booked Flights</h3>
+                <form id="expensiveFlightsForm">
+                    <button type="button" onclick="retrieveMostExpensiveFlights()">Retrieve</button>
+                </form>
+                <div id="expensiveFlightsResults" class="summary"></div>
+            </section>
+
+            <!-- Section: Flights Departing from Texas Without Infants -->
+            <section>
+                <h3>Retrieve Flights Departing from Texas Without Infants</h3>
+                <form id="texasNoInfantFlightsForm">
+                    <button type="button" onclick="retrieveTexasFlightsWithoutInfants()">Retrieve</button>
+                </form>
+                <div id="texasNoInfantFlightsResults" class="summary"></div>
+            </section>
+
+            <!-- Section: Flights Arriving to California (Sep-Oct 2024) -->
+            <section>
+                <h3>Retrieve Flights Arriving to California (Sep-Oct 2024)</h3>
+                <form id="californiaArrivalsForm">
+                    <button type="button" onclick="retrieveFlightsArrivingToCalifornia()">Retrieve</button>
+                </form>
+                <div id="californiaArrivalsResults" class="summary"></div>
+            </section>
+
+        </main>
+    </div>
+
+    <!-- Footer -->
+    <footer>
+        <p>&copy; 2024 Account Management System. All rights reserved.</p>
+    </footer>
+</body>
+
+</html>

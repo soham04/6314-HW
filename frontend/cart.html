@@ -6,11 +6,19 @@
   <title>Travel Deals - Cart</title>
   <link rel="stylesheet" href="mystyle.css" />
   <script src="script.js" defer></script>
+  <script>
+    document.addEventListener("DOMContentLoaded", () => {
+      loadUserInfo(); // Ensure user information is displayed
+      displayCart()
+    });
+  </script>
+
 </head>
 
-<body onload="displayCart()">
+<body>
   <header>
     <h1>Travel Deals</h1>
+    <div class="user-info">Loading user info...</div>
   </header>
   <div class="nav-container">
     <nav class="navigation">
@@ -22,6 +30,8 @@
       <a href="contact.html" class="nav-link">Contact Us</a>
       <a href="cart.html" class="nav-link">Cart</a>
       <a href="settings.html" class="nav-link">Settings</a>
+      <a href="register.html" class="nav-link">Register</a>
+      <a href="account.html" class="nav-link">Account</a>
     </nav>
     <div id="date-time" class="date-time"></div>
   </div>
