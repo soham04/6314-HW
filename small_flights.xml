@@ -1,0 +1,24 @@
+<flights>
+    <flight>
+        <flightId>TX3495</flightId>
+        <origin>Santa Rosa</origin>
+        <destination>Texarkana</destination>
+        <departureDate>2024-12-01</departureDate>
+        <arrivalDate>2024-12-01</arrivalDate>
+        <departureTime>05:30 AM</departureTime>
+        <arrivalTime>07:30 AM</arrivalTime>
+        <availableSeats>7</availableSeats>
+        <price>199</price>
+    </flight>
+    <flight>
+        <flightId>TX3496</flightId>
+        <origin>Santa Barbara</origin>
+        <destination>Tyler</destination>
+        <departureDate>2024-12-01</departureDate>
+        <arrivalDate>2024-12-04</arrivalDate>
+        <departureTime>02:30 AM</departureTime>
+        <arrivalTime>05:30 AM</arrivalTime>
+        <availableSeats>27</availableSeats>
+        <price>234</price>
+    </flight>
+</flights>

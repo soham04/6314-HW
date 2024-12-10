@@ -989,56 +989,91 @@ if ($requestUri === '/admin/flights/california-arrivals' && $requestMethod === '
 }
 
 // Load Flights Data from XML
+// Route to upload flights from XML
 if ($requestUri === '/load-flights' && $requestMethod === 'POST') {
+    // Check if the user is an admin
     checkAdminAuthorization();
-    // Check admin authorization
-    session_start();
-    if (!isset($_SESSION['isAdmin']) || !$_SESSION['isAdmin']) {
-        http_response_code(403);
-        echo json_encode(["error" => "Unauthorized access. Admin privileges required."]);
-        exit;
-    }
 
+    // Check if a file is uploaded
     if (!isset($_FILES['flightFile']) || $_FILES['flightFile']['error'] !== UPLOAD_ERR_OK) {
         http_response_code(400);
-        echo json_encode(["error" => "File upload failed. Please try again."]);
+        echo json_encode(["error" => "File upload error. Please upload a valid XML file."]);
         exit;
     }
 
-    $xmlFile = $_FILES['flightFile']['tmp_name'];
-    $xmlContent = file_get_contents($xmlFile);
-    $flights = new SimpleXMLElement($xmlContent);
+    // Load the XML file
+    $xmlFilePath = $_FILES['flightFile']['tmp_name'];
+    $xmlContent = file_get_contents($xmlFilePath);
 
-    $stmt = $conn->prepare("
-        INSERT INTO flights (flight_id, origin, destination, departure_date, arrival_date, departure_time, arrival_time, available_seats, price)
-        VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)
-    ");
+    // Parse the XML
+    $flights = simplexml_load_string($xmlContent);
+    if ($flights === false) {
+        http_response_code(400);
+        echo json_encode(["error" => "Invalid XML structure. Please check your file."]);
+        exit;
+    }
 
+    // Begin database transaction
     $conn->begin_transaction();
     try {
         foreach ($flights->flight as $flight) {
-            $stmt->bind_param(
-                "sssssssis",
-                $flight->id,
-                $flight->origin,
-                $flight->destination,
-                $flight->departureDate,
-                $flight->arrivalDate,
-                $flight->departureTime,
-                $flight->arrivalTime,
-                $flight->seats,
-                $flight->price
-            );
-            $stmt->execute();
+            // Check if the flight_id already exists
+            $checkStmt = $conn->prepare("SELECT flight_id FROM flights WHERE flight_id = ?");
+            $checkStmt->bind_param("s", $flight->id);
+            $checkStmt->execute();
+            $result = $checkStmt->get_result();
+
+            if ($result->num_rows > 0) {
+                // Update the existing record
+                $updateStmt = $conn->prepare("
+                    UPDATE flights
+                    SET origin = ?, destination = ?, departure_date = ?, arrival_date = ?, departure_time = ?, arrival_time = ?, available_seats = ?, price = ?
+                    WHERE flight_id = ?
+                ");
+                $updateStmt->bind_param(
+                    "ssssssids",
+                    $flight->origin,          // Correct
+                    $flight->destination,     // Correct
+                    $flight->departureDate,   // Correct
+                    $flight->arrivalDate,     // Correct
+                    $flight->departureTime,   // Correct
+                    $flight->arrivalTime,     // Correct
+                    $flight->availableSeats,  // Updated to map to availableSeats from XML
+                    $flight->price,           // Correct
+                    $flight->flightId         // Updated to map to flightId from XML
+                );
+                $updateStmt->execute();
+            } else {
+                // Insert a new record
+                $insertStmt = $conn->prepare("
+                    INSERT INTO flights (flight_id, origin, destination, departure_date, arrival_date, departure_time, arrival_time, available_seats, price)
+                    VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)
+                ");
+                $insertStmt->bind_param(
+                    "sssssssis",
+                    $flight->id,
+                    $flight->origin,
+                    $flight->destination,
+                    $flight->departureDate,
+                    $flight->arrivalDate,
+                    $flight->departureTime,
+                    $flight->arrivalTime,
+                    $flight->seats,
+                    $flight->price
+                );
+                $insertStmt->execute();
+            }
         }
+
+        // Commit transaction
         $conn->commit();
-        echo json_encode(["message" => "Flights uploaded successfully."]);
+        echo json_encode(["message" => "Flights uploaded and updated successfully."]);
     } catch (Exception $e) {
+        // Rollback transaction in case of an error
         $conn->rollback();
         http_response_code(500);
         echo json_encode(["error" => "Failed to upload flights: " . $e->getMessage()]);
     }
-    exit;
 }
 
 
