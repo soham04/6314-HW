@@ -620,16 +620,17 @@ if ($requestUri === '/book-hotel' && $requestMethod === 'POST') {
     // Insert booking into hotel_booking table
     $hotelBookingId = uniqid('HBK-');
     $stmt = $conn->prepare(
-        "INSERT INTO hotel_booking (hotel_booking_id, hotel_id, check_in_date, check_out_date, number_of_rooms, total_price) 
-        VALUES (?, ?, ?, ?, ?, ?)"
+        "INSERT INTO hotel_booking (hotel_booking_id, hotel_id, check_in_date, check_out_date, number_of_rooms, price_per_night, total_price) 
+        VALUES (?, ?, ?, ?, ?, ?, ?)"
     );
     $stmt->bind_param(
-        "ssssii",
+        "sssssii",
         $hotelBookingId,
         $hotelId,
         $checkInDate,
         $checkOutDate,
         $numberOfRooms,
+        $pricePerNight,  // Include pricePerNight
         $totalPrice
     );
     if (!$stmt->execute()) {
